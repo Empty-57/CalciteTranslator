@@ -1,9 +1,20 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
-from qfluentwidgets import ComboBoxSettingCard, FluentIcon, ColorSettingCard, PushButton, \
-    setCustomStyleSheet, OptionsSettingCard, BodyLabel, setTheme, qconfig, SingleDirectionScrollArea, SwitchSettingCard, \
+from qfluentwidgets import (
+    ComboBoxSettingCard,
+    FluentIcon,
+    ColorSettingCard,
+    PushButton,
+    setCustomStyleSheet,
+    OptionsSettingCard,
+    BodyLabel,
+    setTheme,
+    qconfig,
+    SingleDirectionScrollArea,
+    SwitchSettingCard,
     MSFluentWindow
+)
 
 from Translator import translation_source_selector
 

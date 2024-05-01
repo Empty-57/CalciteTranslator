@@ -1,6 +1,13 @@
 from enum import Enum
-from qfluentwidgets import QConfig, OptionsConfigItem, OptionsValidator, ColorConfigItem, EnumSerializer, ConfigItem, \
+from qfluentwidgets import (
+    QConfig,
+    OptionsConfigItem,
+    OptionsValidator,
+    ColorConfigItem,
+    EnumSerializer,
+    ConfigItem,
     BoolValidator
+)
 
 
 class TranslatorEnum(Enum):
