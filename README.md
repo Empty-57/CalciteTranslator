@@ -1,2 +1,4 @@
 # CalciteTranslator
-Galgame翻译软件
+
+
+# 自述文件，以后再写
