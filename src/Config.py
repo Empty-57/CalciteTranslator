@@ -1,5 +1,4 @@
 from enum import Enum
-
 from qfluentwidgets import QConfig, OptionsConfigItem, OptionsValidator, ColorConfigItem, EnumSerializer, ConfigItem, \
     BoolValidator
 
@@ -34,6 +33,3 @@ class MyConfig(QConfig):
         EnumSerializer(TranslatorEnum)
     )
     mica_effect_enable = ConfigItem("Main", "EnableMicaEffect", False, BoolValidator())
-
-# f_window_cfg = FloatingWindowConfig()
-# qconfig.load('config/config.json', f_window_cfg)

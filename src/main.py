@@ -1,14 +1,11 @@
 # -*- coding:utf-8 -*-
 import sys
-
 from PySide6 import QtCore
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
-from qfluentwidgets import FluentIcon as FIF, qconfig, FluentTranslator, MSFluentWindow, \
-    setTheme
+from qfluentwidgets import FluentIcon as FIF, qconfig, FluentTranslator, MSFluentWindow, setTheme
 from qfluentwidgets import NavigationItemPosition
-
 from Config import MyConfig
 from FloatingWindow import FloatingWindow
 from HomePage import HomePageWidget
@@ -18,7 +15,6 @@ from SetingPage import SetPageWidget
 
 class Window(MSFluentWindow):
     """ 主界面 """
-
     def __init__(self):
         super().__init__()
         self.config = MyConfig()
@@ -43,7 +39,6 @@ class Window(MSFluentWindow):
         setTheme(qconfig.get(qconfig.themeMode))
         self.setMicaEffectEnabled(self.config.get(self.config.mica_effect_enable))
 
-        # self.windowEffect.setAcrylicEffect(self.winId())
         self.setWindowOpacity(0.9)
 
         self.setWindowIcon(QIcon(':/qfluentwidgets/images/logo.png'))
@@ -59,16 +54,14 @@ class Window(MSFluentWindow):
 
 
 if __name__ == '__main__':
-    # 分辨率适配
+    # dpi adaptation
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
     QApplication.setAttribute(QtCore.Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
     QApplication.setAttribute(QtCore.Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
 
     app = QApplication(sys.argv)
-
-    translator = FluentTranslator()  # 翻译
+    translator = FluentTranslator()  # translation
     app.installTranslator(translator)
-
     w = Window()
     w.show()
     app.exec()

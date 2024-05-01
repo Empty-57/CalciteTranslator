@@ -1,5 +1,4 @@
 from typing import Dict, Union
-
 import mss
 import numpy
 from paddleocr import PaddleOCR
@@ -15,7 +14,6 @@ class OCR:
             img = numpy.array(img)
         result = self._ocr.ocr(img, cls=True)
 
-        # 打印检测框和识别结果
         lines = ' '
         if result[0]:
             for line in result[0]:

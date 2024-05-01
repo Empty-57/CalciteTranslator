@@ -2,7 +2,6 @@ import base64
 import hashlib
 import json
 import time
-
 import MeCab
 import jaconv
 import requests
@@ -10,7 +9,6 @@ from Cryptodome.Cipher import AES
 from Cryptodome.Util.Padding import unpad
 from fake_user_agent import user_agent
 from lxml import etree
-
 from Config import TranslatorEnum
 
 langdetect_api = 'https://fanyi.baidu.com/langdetect'
