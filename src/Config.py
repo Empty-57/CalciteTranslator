@@ -6,7 +6,7 @@ from qfluentwidgets import (
     ColorConfigItem,
     EnumSerializer,
     ConfigItem,
-    BoolValidator
+    BoolValidator,
 )
 
 
