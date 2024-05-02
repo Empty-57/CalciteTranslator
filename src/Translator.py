@@ -2,6 +2,7 @@ import base64
 import hashlib
 import json
 import time
+
 import MeCab
 import jaconv
 import requests
@@ -9,7 +10,6 @@ from Cryptodome.Cipher import AES
 from Cryptodome.Util.Padding import unpad
 from fake_user_agent import user_agent
 from lxml import etree
-from Config import TranslatorEnum
 
 langdetect_api = 'https://fanyi.baidu.com/langdetect'
 DEFAULT_VALUE = 'デフォルト値'
@@ -217,10 +217,10 @@ class MiraiTranslator:
 
 def translation_source_selector(index):
     __dict = {
-        TranslatorEnum.BD_T: BDTranslator,
-        TranslatorEnum.FX_T: FXTranslator,
-        TranslatorEnum.YD_T: YDTranslator,
-        TranslatorEnum.Mirai_T: MiraiTranslator,
+        0: BDTranslator,
+        1: FXTranslator,
+        2: YDTranslator,
+        3: MiraiTranslator,
     }
     return __dict[index]()
 

@@ -112,13 +112,13 @@ class TranslatorCheackThread(QThread):
 
     def run(self):
         __dict = {
-            TranslatorEnum.BD_T: '百度翻译',
-            TranslatorEnum.FX_T: '福昕翻译',
-            TranslatorEnum.YD_T: '有道翻译',
-            TranslatorEnum.Mirai_T: 'Mirai翻译',
+            0: '百度翻译',
+            1: '福昕翻译',
+            2: '有道翻译',
+            3: 'Mirai翻译',
         }
         status_code = None
-        for i in [t for t in TranslatorEnum]:
+        for i in [t.value for t in TranslatorEnum]:
             try:
                 tra = translation_source_selector(i)
                 tra_ = tra.execute()
