@@ -7,7 +7,7 @@ import MeCab
 import jaconv
 import requests
 from Cryptodome.Cipher import AES
-from Cryptodome.Util.Padding import unpad
+from Cryptodome.Util.Padding import unpad, pad
 from fake_user_agent import user_agent
 from lxml import etree
 
@@ -51,7 +51,7 @@ class BDTranslator:
 
     def __init__(self):
         print(f"<{self.__class__.__name__}>:----------start----------")
-        self.__translation_results__ = 'None'
+        self.__translation_results__ = None
         self.__phonetic__ = {}
 
     def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, int, str]:
@@ -89,7 +89,7 @@ class FXTranslator:
 
     def __init__(self):
         print(f"<{self.__class__.__name__}>:----------start----------")
-        self.__translation_results__ = 'None'
+        self.__translation_results__ = None
         self.__phonetic__ = {}
 
     def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, int, str]:
@@ -128,7 +128,7 @@ class YDTranslator:
 
     def __init__(self):
         print(f"<{self.__class__.__name__}>:----------start----------")
-        self.__translation_results__ = 'None'
+        self.__translation_results__ = None
         self.__phonetic__ = {}
 
     def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, int, str]:
@@ -156,10 +156,15 @@ class YDTranslator:
         decode_key = hashlib.md5(YDTranslator.__AESKEY__.encode(encoding='utf-8')).digest()
         aes = AES.new(decode_key, AES.MODE_CBC, decode_iv)
         data_new = base64.urlsafe_b64decode(translate_post.text)
+        if len(data_new) % 16 != 0:
+            data_new = pad(data_new, AES.block_size)
         result = unpad(aes.decrypt(data_new), AES.block_size).decode('utf-8')
         result = json.loads(result)
         if translate_post.status_code == 200 and result['code'] == 0:
-            self.__translation_results__ = result["translateResult"][0][0]['tgt']
+            rls = ''
+            for i in result["translateResult"][0]:
+                rls += i['tgt']
+            self.__translation_results__ = rls
             print(fr"<{self.__class__.__name__}>Translate_Result: {self.__translation_results__}")
             self.__phonetic__ = make_phonetic(ocr_text) if from_lang == 'jp' or langdetect(
                 ocr_text) == 'jp' else {}
@@ -176,7 +181,7 @@ class MiraiTranslator:
 
     def __init__(self):
         print(f"<{self.__class__.__name__}>:----------start----------")
-        self.__translation_results__ = 'None'
+        self.__translation_results__ = None
         self.__phonetic__ = {}
 
     def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, int, str]:

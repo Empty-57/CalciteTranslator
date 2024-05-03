@@ -96,7 +96,7 @@ class HomePageWidget(QWidget):
         else:
             InfoBar.error(
                 title=f'{name}:错误！',
-                content="ConnectionError(网络错误或API已失效)",
+                content="InternalErrors(网络错误或API已失效)",
                 orient=Qt.Orientation.Horizontal,
                 isClosable=True,
                 position=InfoBarPosition.BOTTOM_RIGHT,
