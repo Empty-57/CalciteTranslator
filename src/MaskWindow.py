@@ -26,7 +26,6 @@ class MaskWindow(QWidget):
         super().__init__(parent)
         self._startPos = None
         self._endPos = None
-
         self._changed = False
         self._auto = False
         self._move = False
