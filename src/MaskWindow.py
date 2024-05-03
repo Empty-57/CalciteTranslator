@@ -210,9 +210,11 @@ class OCRThread(QThread):
                    }
         print(monitor)
         self.result = MaskWindow.ocr.execute(monitor)
-        self.result = self.result if self.result else 'None(ocr未识别到,请重试)'
-        try:
-            trans_result = self.mask_obj.Translator.execute(ocr_text=self.result, from_lang='jp', to_lang='zh')
-            return trans_result
-        except IOError:
-            return 'ConnectionError(网络错误或API已失效)', False
+        if self.result:
+            try:
+                trans_result = self.mask_obj.Translator.execute(ocr_text=self.result, from_lang='jp', to_lang='zh')
+                return trans_result
+            except IOError:
+                return 'ConnectionError(网络错误或API已失效)', False
+        else:
+            return 'None(ocr未识别到,请重试)', {}, 200, "err"
