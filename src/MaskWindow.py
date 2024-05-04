@@ -213,7 +213,7 @@ class OCRThread(QThread):
             try:
                 trans_result = self.mask_obj.Translator.execute(ocr_text=self.result, from_lang='jp', to_lang='zh')
                 return trans_result
-            except IOError:
+            except Exception:
                 return 'InternalErrors(网络错误或API已失效)', False
         else:
             return 'None(ocr未识别到,请重试)', {}, 200, "err"
