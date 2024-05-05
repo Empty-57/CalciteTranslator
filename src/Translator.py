@@ -53,11 +53,11 @@ class BDTranslator:
         print(f"<{self.__class__.__name__}>:----------start----------")
         self.__translation_results__ = None
         self.__phonetic__ = {}
+        self.lang_dict = {"jp": 'jp', 'zh': 'zh'}
 
     def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, int, str]:
-        lang_dict = {"jp": 'jp', 'zh': 'zh'}
-        from_lang = lang_dict[from_lang]
-        to_lang = lang_dict[to_lang]
+        from_lang = self.lang_dict[from_lang]
+        to_lang = self.lang_dict[to_lang]
         header = {'user-agent': user_agent(), 'Content-Type': CONTENT_TYPE}
         translate_data = {
             "query": ocr_text,
@@ -91,11 +91,11 @@ class FXTranslator:
         print(f"<{self.__class__.__name__}>:----------start----------")
         self.__translation_results__ = None
         self.__phonetic__ = {}
+        self.lang_dict = {"jp": 'ja', 'zh': 'zh'}
 
     def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, int, str]:
-        lang_dict = {"jp": 'ja', 'zh': 'zh'}
-        from_lang = lang_dict[from_lang]
-        to_lang = lang_dict[to_lang]
+        from_lang = self.lang_dict[from_lang]
+        to_lang = self.lang_dict[to_lang]
         t_ = int(time.time())
         str_ = f'{t_:0<13}' + FXTranslator.__SIGN_KEY__
         md5 = hashlib.md5()  # 创建md5加密对象
@@ -130,11 +130,11 @@ class YDTranslator:
         print(f"<{self.__class__.__name__}>:----------start----------")
         self.__translation_results__ = None
         self.__phonetic__ = {}
+        self.lang_dict = {"jp": 'ja', 'zh': 'zh-CHS'}
 
     def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, int, str]:
-        lang_dict = {"jp": 'ja', 'zh': 'zh-CHS'}
-        from_lang = lang_dict[from_lang]
-        to_lang = lang_dict[to_lang]
+        from_lang = self.lang_dict[from_lang]
+        to_lang = self.lang_dict[to_lang]
         t_ = int(time.time() * 1000)
         str_ = f'client=fanyideskweb&mysticTime={t_}&product=webfanyi&key={YDTranslator.__SECRETKEY__}'
         md5 = hashlib.md5()  # 创建md5加密对象
@@ -183,11 +183,11 @@ class MiraiTranslator:
         print(f"<{self.__class__.__name__}>:----------start----------")
         self.__translation_results__ = None
         self.__phonetic__ = {}
+        self.lang_dict = {"jp": 'ja', 'zh': 'zh'}
 
     def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, int, str]:
-        lang_dict = {"jp": 'ja', 'zh': 'zh'}
-        from_lang = lang_dict[from_lang]
-        to_lang = lang_dict[to_lang]
+        from_lang = self.lang_dict[from_lang]
+        to_lang = self.lang_dict[to_lang]
         header = {'user-agent': user_agent(), 'Content-Type': CONTENT_TYPE}
         tran = requests.get('https://miraitranslate.com/trial/', header)
         cookie = tran.cookies.get_dict()
