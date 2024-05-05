@@ -33,8 +33,8 @@ class MaskWindow(QWidget):
         self.float_w = float_w
         self.config = config
         self.ocr_thread = OCRThread(self)
-        self.translator_index = self.config.get(self.config.translator).value
-        self.Translator = translation_source_selector(self.translator_index)
+        self.translator_index = None
+        self.Translator = None
 
         # setThemeColor('#393e46')
 
@@ -58,6 +58,14 @@ class MaskWindow(QWidget):
         self.setWindowOpacity(0.8)
 
         self.init()
+
+    def initTranslator(self):
+        try:
+            self.translator_index = self.config.get(self.config.translator).value
+            self.Translator = translation_source_selector(self.translator_index)
+            return True
+        except Exception:
+            return False
 
     def init(self):
         self.flushed.triggered.connect(lambda: self.__execute__())

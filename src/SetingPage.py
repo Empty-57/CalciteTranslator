@@ -225,4 +225,6 @@ class SetPageWidget(QWidget):
         self.config.set(self.config.box_color, "#cc212121")
 
     def translator_changed(self, value):
-        self.mask_w.Translator = translation_source_selector(value.value)
+        if all((self.float_w.isVisible(), self.mask_w.isVisible())):
+            del self.mask_w.Translator
+            self.mask_w.Translator = translation_source_selector(value.value)

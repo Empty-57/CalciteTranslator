@@ -8,7 +8,7 @@ from Config import TranslatorEnum
 class HomePageWidget(QWidget):
     signer = Signal(str, int, int)
 
-    def __init__(self, text: str, mask_w: QWidget, float_w: QWidget, config, parent=None):
+    def __init__(self, text: str, mask_w, float_w, config, parent=None):
         super().__init__(parent=parent)
         self.text = text
         self.mask_w = mask_w
@@ -33,10 +33,31 @@ class HomePageWidget(QWidget):
 
     def __start__(self):
         if not all((self.float_w.isVisible(), self.mask_w.isVisible())):
-            self.float_w.show()
-            self.float_w.move(200, 200)
-            self.mask_w.show()
-            self.mask_w.move(200, 200)
+            if self.mask_w.initTranslator():
+                InfoBar.success(
+                    title='翻译源初始化成功',
+                    content="",
+                    orient=Qt.Orientation.Horizontal,
+                    isClosable=True,
+                    position=InfoBarPosition.BOTTOM_RIGHT,
+                    duration=2000,
+                    parent=self
+                )
+                self.float_w.show()
+                self.float_w.move(200, 200)
+                self.mask_w.show()
+                self.mask_w.move(200, 200)
+            else:
+                InfoBar.warning(
+                    title='翻译源初始化失败',
+                    content="详情请查看日志",
+                    orient=Qt.Orientation.Horizontal,
+                    isClosable=True,
+                    position=InfoBarPosition.TOP_RIGHT,
+                    duration=-1,
+                    parent=self
+                )
+                return
 
             InfoBar.success(
                 title='启动成功',
@@ -89,7 +110,7 @@ class HomePageWidget(QWidget):
                 content=f"状态码：{status_code} API可能已经失效",
                 orient=Qt.Orientation.Horizontal,
                 isClosable=True,
-                position=InfoBarPosition.BOTTOM_RIGHT,
+                position=InfoBarPosition.TOP_RIGHT,
                 duration=5000,
                 parent=self
             )
@@ -99,7 +120,7 @@ class HomePageWidget(QWidget):
                 content="InternalErrors(网络错误或API已失效)",
                 orient=Qt.Orientation.Horizontal,
                 isClosable=True,
-                position=InfoBarPosition.BOTTOM_RIGHT,
+                position=InfoBarPosition.TOP_RIGHT,
                 duration=5000,
                 parent=self
             )
