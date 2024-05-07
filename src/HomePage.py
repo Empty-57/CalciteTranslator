@@ -1,10 +1,9 @@
-import time
-
 from PySide6.QtCore import Qt, QThread, Signal
 from PySide6.QtWidgets import QWidget, QHBoxLayout
 from qfluentwidgets import PushButton, InfoBar, InfoBarPosition
-from Translator import translation_source_selector
+
 from Config import TranslatorEnum
+from Translator import translation_source_selector
 
 
 class HomePageWidget(QWidget):

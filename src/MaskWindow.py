@@ -1,10 +1,11 @@
 import time
+
 import pyautogui
 from PySide6.QtCore import QSize, Qt, QPoint, QThread, Signal
 from PySide6.QtWidgets import QWidget, QGridLayout, QHBoxLayout
 from qfluentwidgets import CommandBar, Action, FluentIcon, TransparentToolButton
+
 from TextRecognition import OCR
-from Translator import translation_source_selector
 
 
 def time_keeper(func):
