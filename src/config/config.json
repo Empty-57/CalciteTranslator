@@ -7,7 +7,7 @@
     },
     "Main": {
         "EnableMicaEffect": false,
-        "Translator": 1
+        "Translator": 2
     },
     "QFluentWidgets": {
         "ThemeColor": "#ff393e46",

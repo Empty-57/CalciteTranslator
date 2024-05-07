@@ -25,7 +25,8 @@ class Window(MSFluentWindow):
         self.mask_w.signer.connect(self.float_w.set_text)
         # 创建子界面，实际使用时将 Widget 换成自己的子界面
         self.homeInterface = HomePageWidget('Home Page', mask_w=self.mask_w, float_w=self.float_w, config=self.config,parent=self)
-        self.homeInterface.signer.connect(self.homeInterface.check_info)
+        self.homeInterface.translator_check_signer.connect(self.homeInterface.translator_check_info)
+        self.homeInterface.translator_start_signer.connect(self.homeInterface.translator_start_info)
         self.settingInterface = SetPageWidget(
             'Setting Page',
             config=self.config,
