@@ -11,10 +11,12 @@ from FloatingWindow import FloatingWindow
 from HomePage import HomePageWidget
 from MaskWindow import MaskWindow
 from SetingPage import SetPageWidget
+from FunConfigPage import FunConfigPageWidget
 
 
 class Window(MSFluentWindow):
     """ 主界面 """
+
     def __init__(self):
         super().__init__()
         self.config = MyConfig()
@@ -24,7 +26,12 @@ class Window(MSFluentWindow):
         self.mask_w = MaskWindow(float_w=self.float_w, config=self.config)
         self.mask_w.signer.connect(self.float_w.set_text)
         # 创建子界面，实际使用时将 Widget 换成自己的子界面
-        self.homeInterface = HomePageWidget('Home Page', mask_w=self.mask_w, float_w=self.float_w, config=self.config,parent=self)
+        self.homeInterface = HomePageWidget(text='Home Page',
+                                            mask_w=self.mask_w,
+                                            float_w=self.float_w,
+                                            config=self.config,
+                                            parent=self
+                                            )
         self.homeInterface.translator_check_signer.connect(self.homeInterface.translator_check_info)
         self.homeInterface.translator_start_signer.connect(self.homeInterface.translator_start_info)
         self.settingInterface = SetPageWidget(
@@ -34,6 +41,8 @@ class Window(MSFluentWindow):
             mask_w=self.mask_w,
             parent=self
         )
+        self.funInterface = FunConfigPageWidget(text='Function Config page')
+
         self.initNavigation()
 
     def initWindow(self):
@@ -43,13 +52,14 @@ class Window(MSFluentWindow):
         self.setWindowOpacity(0.9)
 
         self.setWindowIcon(QIcon(':/qfluentwidgets/images/logo.png'))
-        self.setWindowTitle('GalTranslator')
+        self.setWindowTitle('CalciteTranslator')
 
         self.resize(800, 600)
         self.setMinimumSize(600, 400)
 
     def initNavigation(self):
         self.addSubInterface(self.homeInterface, FIF.HOME, '主页', FIF.HOME)
+        self.addSubInterface(self.funInterface, FIF.DEVELOPER_TOOLS, '配置', FIF.DEVELOPER_TOOLS)
 
         self.addSubInterface(self.settingInterface, FIF.SETTING, '设置', FIF.SETTING, NavigationItemPosition.BOTTOM)
 

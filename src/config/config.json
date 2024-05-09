@@ -3,11 +3,11 @@
         "BoxColor": "#cc212121",
         "Font": "Arial",
         "FontColor": "#cc00adb5",
-        "FontSize": 16
+        "FontSize": 11
     },
     "Main": {
         "EnableMicaEffect": false,
-        "Translator": 0
+        "Translator": 3
     },
     "QFluentWidgets": {
         "ThemeColor": "#ff393e46",
