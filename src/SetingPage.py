@@ -15,17 +15,14 @@ from qfluentwidgets import (
     MSFluentWindow, TransparentToolButton, ToolTipFilter, ToolTipPosition
 )
 
-from Translator import translation_source_selector
-
 
 class SetPageWidget(QWidget):
 
-    def __init__(self, text: str, config, float_w, mask_w, parent: MSFluentWindow = None):
+    def __init__(self, text: str, config, float_w, parent: MSFluentWindow = None):
         super().__init__(parent=parent)
         self.text = text
         self.config = config
         self.float_w = float_w
-        self.mask_w = mask_w
         self.main_window = parent
 
         self.scrollArea = SingleDirectionScrollArea(orient=Qt.Orientation.Vertical)
@@ -43,8 +40,6 @@ class SetPageWidget(QWidget):
         self.vBoxLayout.setSpacing(1)
 
         self.title_1 = BodyLabel(text="文字窗设置")
-        self.title_2 = BodyLabel(text="翻译源设置")
-        self.title_2_1 = BodyLabel(text="免费翻译源，无需配置，但不稳定")
         self.title_3 = BodyLabel(text="个性化")
 
         self.init()
@@ -54,15 +49,9 @@ class SetPageWidget(QWidget):
 
         self.title_1.setFont(QFont('Arial', 16))
 
-        self.title_2.setFont(QFont('Arial', 16))
-        self.title_2_1.setFont(QFont('Arial', 12))
-
         self.title_3.setFont(QFont('Arial', 16))
 
         self.title_1.setFixedHeight(50)
-
-        self.title_2.setFixedHeight(50)
-        self.title_2_1.setFixedHeight(30)
 
         self.title_3.setFixedHeight(50)
 
@@ -116,15 +105,6 @@ class SetPageWidget(QWidget):
         box_color_card.hBoxLayout.addSpacing(16)
         self.config.box_color.valueChanged.connect(lambda value: self.box_color_changed(value))
 
-        translator_card = OptionsSettingCard(
-            configItem=self.config.translator,
-            icon=FluentIcon.LANGUAGE,
-            title="翻译源",
-            content="设置翻译源",
-            texts=["百度翻译", "福昕翻译", "有道翻译", "Mirai翻译"],
-        )
-        self.config.translator.valueChanged.connect(lambda value: self.translator_changed(value))
-
         mica_effect_card = SwitchSettingCard(
             configItem=self.config.mica_effect_enable,
             icon=FluentIcon.TRANSPARENT,
@@ -147,9 +127,6 @@ class SetPageWidget(QWidget):
         self.vBoxLayout.addWidget(font_card, 1)
         self.vBoxLayout.addWidget(font_color_card, 1)
         self.vBoxLayout.addWidget(box_color_card, 1)
-        self.vBoxLayout.addWidget(self.title_2, Qt.AlignmentFlag.AlignLeft)
-        self.vBoxLayout.addWidget(self.title_2_1, Qt.AlignmentFlag.AlignLeft)
-        self.vBoxLayout.addWidget(translator_card, 1)
         self.vBoxLayout.addWidget(self.title_3, 1, Qt.AlignmentFlag.AlignLeft)
         self.vBoxLayout.addWidget(mica_effect_card, 1)
         self.vBoxLayout.addWidget(theme_card, 1)
@@ -226,8 +203,3 @@ class SetPageWidget(QWidget):
                                 """
         setCustomStyleSheet(self.float_w.text_label, box_qss, box_qss)
         self.config.set(self.config.box_color, "#cc212121")
-
-    def translator_changed(self, value):
-        if all((self.float_w.isVisible(), self.mask_w.isVisible())):
-            del self.mask_w.Translator
-            self.mask_w.Translator = translation_source_selector(value.value)

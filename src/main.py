@@ -35,13 +35,17 @@ class Window(MSFluentWindow):
         self.homeInterface.translator_check_signer.connect(self.homeInterface.translator_check_info)
         self.homeInterface.translator_start_signer.connect(self.homeInterface.translator_start_info)
         self.settingInterface = SetPageWidget(
-            'Setting Page',
+            text='Setting Page',
+            config=self.config,
+            float_w=self.float_w,
+            parent=self
+        )
+        self.funInterface = FunConfigPageWidget(
+            text='Function Config page',
             config=self.config,
             float_w=self.float_w,
             mask_w=self.mask_w,
-            parent=self
         )
-        self.funInterface = FunConfigPageWidget(text='Function Config page')
 
         self.initNavigation()
 
