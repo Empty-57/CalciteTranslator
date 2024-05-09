@@ -1,11 +1,10 @@
-from PySide6.QtGui import QFont
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
 from qfluentwidgets import (
     ComboBoxSettingCard,
     FluentIcon,
     ColorSettingCard,
-    PushButton,
     setCustomStyleSheet,
     OptionsSettingCard,
     BodyLabel,
@@ -13,7 +12,7 @@ from qfluentwidgets import (
     qconfig,
     SingleDirectionScrollArea,
     SwitchSettingCard,
-    MSFluentWindow
+    MSFluentWindow, TransparentToolButton, ToolTipFilter, ToolTipPosition
 )
 
 from Translator import translation_source_selector
@@ -94,7 +93,9 @@ class SetPageWidget(QWidget):
             content="设置文字颜色",
             enableAlpha=True
         )
-        font_color_rst = PushButton(text="恢复默认值")
+        font_color_rst = TransparentToolButton(FluentIcon.CANCEL)
+        font_color_rst.setToolTip('恢复默认值')
+        font_color_rst.installEventFilter(ToolTipFilter(font_color_rst, showDelay=300, position=ToolTipPosition.TOP))
         font_color_rst.clicked.connect(self.font_color_rst)
         font_color_card.hBoxLayout.addWidget(font_color_rst)
         font_color_card.hBoxLayout.addSpacing(16)
@@ -107,7 +108,9 @@ class SetPageWidget(QWidget):
             content="设置文字窗颜色",
             enableAlpha=True
         )
-        box_color_rst = PushButton(text="恢复默认值")
+        box_color_rst = TransparentToolButton(FluentIcon.CANCEL)
+        box_color_rst.setToolTip('恢复默认值')
+        box_color_rst.installEventFilter(ToolTipFilter(box_color_rst, showDelay=300, position=ToolTipPosition.TOP))
         box_color_rst.clicked.connect(self.box_color_rst)
         box_color_card.hBoxLayout.addWidget(box_color_rst)
         box_color_card.hBoxLayout.addSpacing(16)
