@@ -40,7 +40,7 @@ class SetPageWidget(QWidget):
         self.vBoxLayout.setSpacing(1)
 
         self.title_1 = BodyLabel(text="文字窗设置")
-        self.title_3 = BodyLabel(text="个性化")
+        self.title_2 = BodyLabel(text="个性化")
 
         self.init()
 
@@ -49,11 +49,11 @@ class SetPageWidget(QWidget):
 
         self.title_1.setFont(QFont('Arial', 16))
 
-        self.title_3.setFont(QFont('Arial', 16))
+        self.title_2.setFont(QFont('Arial', 16))
 
         self.title_1.setFixedHeight(50)
 
-        self.title_3.setFixedHeight(50)
+        self.title_2.setFixedHeight(50)
 
         font_size_card = ComboBoxSettingCard(
             configItem=self.config.font_size,
@@ -127,7 +127,7 @@ class SetPageWidget(QWidget):
         self.vBoxLayout.addWidget(font_card, 1)
         self.vBoxLayout.addWidget(font_color_card, 1)
         self.vBoxLayout.addWidget(box_color_card, 1)
-        self.vBoxLayout.addWidget(self.title_3, 1, Qt.AlignmentFlag.AlignLeft)
+        self.vBoxLayout.addWidget(self.title_2, 1, Qt.AlignmentFlag.AlignLeft)
         self.vBoxLayout.addWidget(mica_effect_card, 1)
         self.vBoxLayout.addWidget(theme_card, 1)
         self.vBoxLayout.addStretch(1)

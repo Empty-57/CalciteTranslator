@@ -1,13 +1,13 @@
 {
     "FloatingWindow": {
-        "BoxColor": "#cc212121",
+        "BoxColor": "#33959945",
         "Font": "Arial",
-        "FontColor": "#cc00adb5",
-        "FontSize": 20
+        "FontColor": "#ccb58c12",
+        "FontSize": 15
     },
     "Main": {
         "EnableMicaEffect": false,
-        "Translator": 2
+        "Translator": 0
     },
     "QFluentWidgets": {
         "ThemeColor": "#ff393e46",

@@ -26,19 +26,19 @@ class FunConfigPageWidget(QWidget):
         self.vBoxLayout = QVBoxLayout()
         self.view.setLayout(self.vBoxLayout)
 
-        self.title_2 = BodyLabel(text="翻译源设置")
-        self.title_2_1 = BodyLabel(text="免费翻译源，无需配置，但不稳定")
+        self.title_1 = BodyLabel(text="翻译源设置")
+        self.title_1_1 = BodyLabel(text="免费翻译源，无需配置，但不稳定")
 
         self.vBoxLayout.setSpacing(1)
 
         self.init()
 
     def init(self):
-        self.title_2.setFixedHeight(50)
-        self.title_2_1.setFixedHeight(30)
+        self.title_1.setFixedHeight(50)
+        self.title_1_1.setFixedHeight(30)
 
-        self.title_2.setFont(QFont('Arial', 16))
-        self.title_2_1.setFont(QFont('Arial', 12))
+        self.title_1.setFont(QFont('Arial', 16))
+        self.title_1_1.setFont(QFont('Arial', 12))
 
         translator_card = OptionsSettingCard(
             configItem=self.config.translator,
@@ -49,8 +49,8 @@ class FunConfigPageWidget(QWidget):
         )
         self.config.translator.valueChanged.connect(lambda value: self.translator_changed(value))
 
-        self.vBoxLayout.addWidget(self.title_2, Qt.AlignmentFlag.AlignLeft)
-        self.vBoxLayout.addWidget(self.title_2_1, Qt.AlignmentFlag.AlignLeft)
+        self.vBoxLayout.addWidget(self.title_1, Qt.AlignmentFlag.AlignLeft)
+        self.vBoxLayout.addWidget(self.title_1_1, Qt.AlignmentFlag.AlignLeft)
         self.vBoxLayout.addWidget(translator_card, 1)
         self.vBoxLayout.addStretch(1)
 
