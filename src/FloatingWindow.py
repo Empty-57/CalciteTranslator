@@ -1,7 +1,8 @@
 from PySide6.QtCore import Qt, QPoint, QSize
 from PySide6.QtGui import QFont, QColor
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
-from qfluentwidgets import BodyLabel, PlainTextEdit, setCustomStyleSheet, CommandBar, Action, FluentIcon
+from qfluentwidgets import BodyLabel, PlainTextEdit, setCustomStyleSheet, CommandBar, Action, FluentIcon, \
+    SingleDirectionScrollArea
 
 
 class FloatingWindow(QWidget):
@@ -17,14 +18,24 @@ class FloatingWindow(QWidget):
         self.font_color: QColor = self.config.get(self.config.font_color)
         self.box_color: QColor = self.config.get(self.config.box_color)
 
+        self.scrollArea = SingleDirectionScrollArea(orient=Qt.Orientation.Vertical)
+        # 动态调整大小
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.scrollArea.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
         self.commandBar = CommandBar()
         self.commandBar.setIconSize(QSize(12, 12))
         self._fontsize_inc = Action(FluentIcon.ADD.icon(color='#f08a5d'), '字号+')
         self._fontsize_dec = Action(FluentIcon.REMOVE.icon(color='#30e3ca'), '字号-')
 
-        self.vBoxLayout = QVBoxLayout(self)
+        self.vBoxLayout_side = QVBoxLayout(self)
+        self.vBoxLayout_side.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.vBoxLayout = QVBoxLayout()
+        self.view = QWidget()
+        self.view.setLayout(self.vBoxLayout)
         self.hBoxLayout = QHBoxLayout()
-        self.text_label = PlainTextEdit()
+        self.text_label = BodyLabel()
 
         self.status_bar = QWidget(self)
         self.status_text = BodyLabel(text="waiting...")
@@ -49,41 +60,40 @@ class FloatingWindow(QWidget):
         ])
         self.commandBar.addSeparator()
 
-        self.text_label.setPlainText("デフォルト値")
+        self.text_label.setText("デフォルト値")
         self.text_label.setFont(QFont(self.font, self.font_size))
-        self.text_label.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        self.text_label.setReadOnly(True)
-        self.text_label.setTextInteractionFlags(Qt.TextInteractionFlag.NoTextInteraction)
-        self.text_label.viewport().setCursor(Qt.CursorShape.ArrowCursor)
-        self.text_label.setContextMenuPolicy(Qt.ContextMenuPolicy.NoContextMenu)
-        self.text_label.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.text_label.setWordWrap(True)
 
         self.status_text.setFont(QFont(self.font, 12))
         self.status_text.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.vBoxLayout.setSpacing(1)
+        self.vBoxLayout.setSpacing(0)
+        self.vBoxLayout_side.setSpacing(1)
+        self.vBoxLayout_side.setContentsMargins(0, 0, 0, 0)
         self.vBoxLayout.setContentsMargins(0, 0, 0, 0)
         self.hBoxLayout.setContentsMargins(0, 0, 0, 0)
 
-        self.text_label.setMaximumHeight(75)
+        # self.text_label.setContentsMargins(2, 1, 2, 1)
 
         self.status_bar.setLayout(self.hBoxLayout)
         self.hBoxLayout.addWidget(self.commandBar, 1)
         self.hBoxLayout.addWidget(self.status_text, 3, Qt.AlignmentFlag.AlignLeft)
-
-        self.vBoxLayout.addWidget(self.status_bar)
         self.vBoxLayout.addWidget(self.text_label)
 
+        self.scrollArea.setWidget(self.view)
+
+        self.scrollArea.setStyleSheet("QScrollArea{background: transparent; border: none}")
+        # 必须给内部的视图也加上透明背景样式
+        self.view.setStyleSheet("QWidget{background: transparent}")
+        self.vBoxLayout_side.addWidget(self.status_bar)
+        self.vBoxLayout_side.addWidget(self.scrollArea)
+
         text_label_qss = f"""
-                PlainTextEdit{{
+                BodyLabel{{
                 background-color: {'#' + str(hex(self.box_color.alpha()))[2:] + str(self.box_color.name())[1:]};
                 color: {'#' + str(hex(self.font_color.alpha()))[2:] + str(self.font_color.name())[1:]};
                 border-radius:0px;  
                 }}
-                PlainTextEdit:hover{{
-                background-color: {'#' + str(hex(self.box_color.alpha()))[2:] + str(self.box_color.name())[1:]};
-                }}
-
                 """
         setCustomStyleSheet(self.text_label, text_label_qss, text_label_qss)
 
@@ -103,7 +113,7 @@ class FloatingWindow(QWidget):
 
     def set_text(self, text):
         if text[0]:
-            self.text_label.setPlainText(text[0][0])
+            self.text_label.setText(text[0][0])
         if not text[1]:
             self.status_text.setText("翻译中……")
         else:
@@ -122,7 +132,7 @@ class FloatingWindow(QWidget):
             self.text_label.setFont(QFont(self.font, self.font_size))
 
     def reset(self):
-        self.text_label.setPlainText("デフォルト値")
+        self.text_label.setText("デフォルト値")
         self.text_label.setFont(QFont(self.font, self.font_size))
         self.status_text.setText("waiting...")
 

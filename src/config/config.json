@@ -1,9 +1,9 @@
 {
     "FloatingWindow": {
-        "BoxColor": "#33959945",
+        "BoxColor": "#cc212121",
         "Font": "Arial",
-        "FontColor": "#ccb58c12",
-        "FontSize": 15
+        "FontColor": "#cc00adb5",
+        "FontSize": 17
     },
     "Main": {
         "EnableMicaEffect": false,

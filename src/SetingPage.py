@@ -149,13 +149,10 @@ class SetPageWidget(QWidget):
     def font_color_changed(self, value):
         box_color = self.config.get(self.config.box_color)
         text_label_qss = f"""
-                        PlainTextEdit{{
+                        BodyLabel{{
                         background-color: {'#' + str(hex(box_color.alpha()))[2:] + str(box_color.name())[1:]};
                         color: {'#' + str(hex(value.alpha()))[2:] + str(value.name())[1:]};
                         border-radius:0px;  
-                        }}
-                        PlainTextEdit:hover{{
-                        background-color: {'#' + str(hex(box_color.alpha()))[2:] + str(box_color.name())[1:]};
                         }}
                         """
         setCustomStyleSheet(self.float_w.text_label, text_label_qss, text_label_qss)
@@ -163,13 +160,10 @@ class SetPageWidget(QWidget):
     def font_color_rst(self):
         box_color = self.config.get(self.config.box_color)
         text_label_qss = f"""
-                            PlainTextEdit{{
+                            BodyLabel{{
                             background-color: {'#' + str(hex(box_color.alpha()))[2:] + str(box_color.name())[1:]};
                             color: "#cc00adb5";
                             border-radius:0px;  
-                            }}
-                            PlainTextEdit:hover{{
-                            background-color: {'#' + str(hex(box_color.alpha()))[2:] + str(box_color.name())[1:]};
                             }}
                             """
         setCustomStyleSheet(self.float_w.text_label, text_label_qss, text_label_qss)
@@ -178,13 +172,10 @@ class SetPageWidget(QWidget):
     def box_color_changed(self, value):
         font_color = self.config.get(self.config.font_color)
         box_qss = f"""
-                    PlainTextEdit{{
+                    BodyLabel{{
                     background-color: {'#' + str(hex(value.alpha()))[2:] + str(value.name())[1:]};
                     color: {'#' + str(hex(font_color.alpha()))[2:] + str(font_color.name())[1:]};
                     border-radius:0px;  
-                    }}
-                    PlainTextEdit:hover{{
-                    background-color: {'#' + str(hex(value.alpha()))[2:] + str(value.name())[1:]};
                     }}
                     """
         setCustomStyleSheet(self.float_w.text_label, box_qss, box_qss)
@@ -192,13 +183,10 @@ class SetPageWidget(QWidget):
     def box_color_rst(self):
         font_color = self.config.get(self.config.font_color)
         box_qss = f"""
-                                PlainTextEdit{{
+                                BodyLabel{{
                                 background-color: #cc212121;
                                 color: {'#' + str(hex(font_color.alpha()))[2:] + str(font_color.name())[1:]};
                                 border-radius:0px;  
-                                }}
-                                PlainTextEdit:hover{{
-                                background-color: #cc212121;
                                 }}
                                 """
         setCustomStyleSheet(self.float_w.text_label, box_qss, box_qss)
