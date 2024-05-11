@@ -1,13 +1,13 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLineEdit, QFrame
 from qfluentwidgets import SingleDirectionScrollArea, BodyLabel, OptionsSettingCard, FluentIcon
 
 from Translator import translation_source_selector
 
 
 class FunConfigPageWidget(QWidget):
-    def __init__(self, text: str, config,float_w, mask_w):
+    def __init__(self, text: str, config, float_w, mask_w):
         super().__init__()
         self.text = text
         self.config = config
@@ -20,25 +20,51 @@ class FunConfigPageWidget(QWidget):
         self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.scrollArea.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.hBoxLayout = QHBoxLayout(self)
-        self.hBoxLayout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.SideLayout = QVBoxLayout(self)
+        self.SideLayout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.view = QWidget()
         self.vBoxLayout = QVBoxLayout()
+        self.vBoxLayout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.view.setLayout(self.vBoxLayout)
 
-        self.title_1 = BodyLabel(text="翻译源设置")
-        self.title_1_1 = BodyLabel(text="免费翻译源，无需配置，但不稳定")
-
         self.vBoxLayout.setSpacing(1)
+
+        self.title = BodyLabel(text="功能配置")
+        self.title_1 = BodyLabel(text="翻译源选择")
+        self.title_1_1 = BodyLabel(text="各翻译源效果不尽相同，按需选择")
+        self.title_2 = BodyLabel(text="API配置")
+        self.title_2_1 = BodyLabel(text="百度API")
+
+        self.bd_apiItem_1 = QHBoxLayout()
+        self.bd_apiItem_1.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.bd_appid_text = BodyLabel(text="APPID")
+        self.bd_key_text = BodyLabel(text="KEY")
+        self.bd_appid_edit = QLineEdit()
+        self.bd_key_edit = QLineEdit()
+        self.bd_appid_edit.setPlaceholderText("APPID")
+        self.bd_key_edit.setPlaceholderText("KEY")
+        self.bd_apiItem_1.setSpacing(10)
 
         self.init()
 
     def init(self):
+        self.bd_apiItem_1.setContentsMargins(0, 0, 0, 0)
+        self.vBoxLayout.setContentsMargins(0, 15, 30, 15)
+        self.SideLayout.setContentsMargins(30, 15, 0, 15)
+
         self.title_1.setFixedHeight(50)
         self.title_1_1.setFixedHeight(30)
+        self.title_2.setFixedHeight(50)
+        self.title_2_1.setFixedHeight(30)
 
+        self.bd_appid_edit.setMinimumHeight(40)
+        self.bd_key_edit.setMinimumHeight(40)
+
+        self.title.setFont(QFont('Arial', 20))
         self.title_1.setFont(QFont('Arial', 16))
         self.title_1_1.setFont(QFont('Arial', 12))
+        self.title_2.setFont(QFont('Arial', 16))
+        self.title_2_1.setFont(QFont('Arial', 12))
 
         translator_card = OptionsSettingCard(
             configItem=self.config.translator,
@@ -51,7 +77,18 @@ class FunConfigPageWidget(QWidget):
 
         self.vBoxLayout.addWidget(self.title_1, Qt.AlignmentFlag.AlignLeft)
         self.vBoxLayout.addWidget(self.title_1_1, Qt.AlignmentFlag.AlignLeft)
-        self.vBoxLayout.addWidget(translator_card, 1)
+        self.vBoxLayout.addWidget(translator_card)
+        self.vBoxLayout.addSpacing(20)
+
+        self.vBoxLayout.addWidget(self.title_2, Qt.AlignmentFlag.AlignLeft)
+        self.vBoxLayout.addSpacing(10)
+        self.vBoxLayout.addWidget(self.title_2_1, Qt.AlignmentFlag.AlignLeft)
+        self.vBoxLayout.addLayout(self.bd_apiItem_1)
+        self.bd_apiItem_1.addWidget(self.bd_appid_text)
+        self.bd_apiItem_1.addWidget(self.bd_appid_edit, 2)
+        self.bd_apiItem_1.addStretch(1)
+        self.bd_apiItem_1.addWidget(self.bd_key_text)
+        self.bd_apiItem_1.addWidget(self.bd_key_edit, 2)
         self.vBoxLayout.addStretch(1)
 
         self.scrollArea.setWidget(self.view)
@@ -59,7 +96,8 @@ class FunConfigPageWidget(QWidget):
         self.scrollArea.setStyleSheet("QScrollArea{background: transparent; border: none}")
         # 必须给内部的视图也加上透明背景样式
         self.view.setStyleSheet("QWidget{background: transparent}")
-        self.hBoxLayout.addWidget(self.scrollArea, 1)
+        self.SideLayout.addWidget(self.title)
+        self.SideLayout.addWidget(self.scrollArea)
 
         # 必须给子界面设置全局唯一的对象名
         self.setObjectName(self.text.replace(' ', '-'))

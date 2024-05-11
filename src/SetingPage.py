@@ -31,28 +31,28 @@ class SetPageWidget(QWidget):
         self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.scrollArea.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.hBoxLayout = QHBoxLayout(self)
-        self.hBoxLayout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.SideLayout = QVBoxLayout(self)
+        self.SideLayout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.view = QWidget()
         self.vBoxLayout = QVBoxLayout()
         self.view.setLayout(self.vBoxLayout)
 
         self.vBoxLayout.setSpacing(1)
 
+        self.title = BodyLabel(text="设置")
         self.title_1 = BodyLabel(text="文字窗设置")
         self.title_2 = BodyLabel(text="个性化")
 
         self.init()
 
     def init(self):
-        self.vBoxLayout.setContentsMargins(30, 15, 50, 15)
+        self.vBoxLayout.setContentsMargins(0, 15, 30, 15)
+        self.SideLayout.setContentsMargins(30, 15, 0, 15)
 
+        self.title.setFont(QFont('Arial', 20))
         self.title_1.setFont(QFont('Arial', 16))
-
         self.title_2.setFont(QFont('Arial', 16))
-
         self.title_1.setFixedHeight(50)
-
         self.title_2.setFixedHeight(50)
 
         font_size_card = ComboBoxSettingCard(
@@ -123,13 +123,15 @@ class SetPageWidget(QWidget):
         qconfig.themeChanged.connect(lambda value: setTheme(value))
 
         self.vBoxLayout.addWidget(self.title_1, Qt.AlignmentFlag.AlignLeft)
-        self.vBoxLayout.addWidget(font_size_card, 1)
-        self.vBoxLayout.addWidget(font_card, 1)
-        self.vBoxLayout.addWidget(font_color_card, 1)
-        self.vBoxLayout.addWidget(box_color_card, 1)
-        self.vBoxLayout.addWidget(self.title_2, 1, Qt.AlignmentFlag.AlignLeft)
-        self.vBoxLayout.addWidget(mica_effect_card, 1)
-        self.vBoxLayout.addWidget(theme_card, 1)
+        self.vBoxLayout.addWidget(font_size_card)
+        self.vBoxLayout.addWidget(font_card)
+        self.vBoxLayout.addWidget(font_color_card)
+        self.vBoxLayout.addWidget(box_color_card)
+        self.vBoxLayout.addSpacing(20)
+
+        self.vBoxLayout.addWidget(self.title_2, Qt.AlignmentFlag.AlignLeft)
+        self.vBoxLayout.addWidget(mica_effect_card)
+        self.vBoxLayout.addWidget(theme_card)
         self.vBoxLayout.addStretch(1)
 
         self.scrollArea.setWidget(self.view)
@@ -137,7 +139,8 @@ class SetPageWidget(QWidget):
         self.scrollArea.setStyleSheet("QScrollArea{background: transparent; border: none}")
         # 必须给内部的视图也加上透明背景样式
         self.view.setStyleSheet("QWidget{background: transparent}")
-        self.hBoxLayout.addWidget(self.scrollArea, 1)
+        self.SideLayout.addWidget(self.title)
+        self.SideLayout.addWidget(self.scrollArea)
 
         # 必须给子界面设置全局唯一的对象名
         self.setObjectName(self.text.replace(' ', '-'))
@@ -151,25 +154,21 @@ class SetPageWidget(QWidget):
         box_rgba = f'#{hex(box_color.rgba())[2:]:0>8}'
         font_rgba = f'#{hex(value.rgba())[2:]:0>8}'
         text_label_qss = f"""
-                        BodyLabel{{
                         background-color: {box_rgba};
                         color: {font_rgba};
                         border-radius:0px;  
-                        }}
                         """
-        setCustomStyleSheet(self.float_w.text_label, text_label_qss, text_label_qss)
+        self.float_w.text_label.setStyleSheet(text_label_qss)
 
     def font_color_rst(self):
         box_color = self.config.get(self.config.box_color)
         box_rgba = f'#{hex(box_color.rgba())[2:]:0>8}'
         text_label_qss = f"""
-                            BodyLabel{{
                             background-color: {box_rgba};
                             color: "#cc00adb5";
                             border-radius:0px;  
-                            }}
                             """
-        setCustomStyleSheet(self.float_w.text_label, text_label_qss, text_label_qss)
+        self.float_w.text_label.setStyleSheet(text_label_qss)
         self.config.set(self.config.font_color, "#cc00adb5")
 
     def box_color_changed(self, value):
@@ -177,23 +176,19 @@ class SetPageWidget(QWidget):
         box_rgba = f'#{hex(value.rgba())[2:]:0>8}'
         font_rgba = f'#{hex(font_color.rgba())[2:]:0>8}'
         box_qss = f"""
-                    BodyLabel{{
                     background-color: {box_rgba};
                     color: {font_rgba};
                     border-radius:0px;  
-                    }}
                     """
-        setCustomStyleSheet(self.float_w.text_label, box_qss, box_qss)
+        self.float_w.text_label.setStyleSheet(box_qss)
 
     def box_color_rst(self):
         font_color = self.config.get(self.config.font_color)
         font_rgba = f'#{hex(font_color.rgba())[2:]:0>8}'
         box_qss = f"""
-                                BodyLabel{{
-                                background-color: #cc212121;
-                                color: {font_rgba};
-                                border-radius:0px;  
-                                }}
-                                """
-        setCustomStyleSheet(self.float_w.text_label, box_qss, box_qss)
+                    background-color: #cc212121;
+                    color: {font_rgba};
+                    border-radius:0px;  
+                    """
+        self.float_w.text_label.setStyleSheet(box_qss)
         self.config.set(self.config.box_color, "#cc212121")

@@ -7,10 +7,10 @@
     },
     "Main": {
         "EnableMicaEffect": false,
-        "Translator": 0
+        "Translator": 3
     },
     "QFluentWidgets": {
         "ThemeColor": "#ff393e46",
-        "ThemeMode": "Dark"
+        "ThemeMode": "Light"
     }
 }

@@ -1,6 +1,6 @@
 from PySide6.QtCore import Qt, QPoint, QSize
 from PySide6.QtGui import QFont, QColor
-from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy
+from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy, QLabel
 from qfluentwidgets import BodyLabel, setCustomStyleSheet, CommandBar, Action, FluentIcon, \
     SingleDirectionScrollArea
 
@@ -35,10 +35,10 @@ class FloatingWindow(QWidget):
         self.view = QWidget()
         self.view.setLayout(self.vBoxLayout)
         self.hBoxLayout = QHBoxLayout()
-        self.text_label = BodyLabel()
+        self.text_label = QLabel(text="デフォルト値")
 
         self.status_bar = QWidget(self)
-        self.status_text = BodyLabel(text="waiting...")
+        self.status_text = QLabel(text="waiting...")
 
         self.init()
         self.resize(600, 100)
@@ -60,7 +60,6 @@ class FloatingWindow(QWidget):
         ])
         self.commandBar.addSeparator()
 
-        self.text_label.setText("デフォルト値")
         self.text_label.setFont(QFont(self.font, self.font_size))
         self.text_label.setWordWrap(True)
         self.text_label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
@@ -88,26 +87,23 @@ class FloatingWindow(QWidget):
         self.vBoxLayout_side.addWidget(self.scrollArea)
 
         text_label_qss = f"""
-                BodyLabel{{
                 background-color: #{hex(self.box_color.rgba())[2:]:0>8};
                 color: #{hex(self.font_color.rgba())[2:]:0>8};
-                border-radius:0px;  
-                }}
+                border-radius:0px;
                 """
-        setCustomStyleSheet(self.text_label, text_label_qss, text_label_qss)
+        self.text_label.setStyleSheet(text_label_qss)
 
-        status_text_qss = """
-                    BodyLabel{
-                    color: #66ffffff;
-                    background-color: rgba(33, 33, 33,0);
-                    }
-                    """
-        setCustomStyleSheet(self.status_text, status_text_qss, status_text_qss)
+        self.status_text.setStyleSheet(
+            """
+            color: #66ffffff;
+            background-color: rgba(33, 33, 33,0);
+            """
+        )
 
         self.status_bar.setStyleSheet(
-            '''
+            """
             background-color: rgba(48, 56, 65,0.8);
-            '''
+            """
         )
 
     def set_text(self, text):
