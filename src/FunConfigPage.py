@@ -1,6 +1,6 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLineEdit, QFrame
+from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLineEdit
 from qfluentwidgets import SingleDirectionScrollArea, BodyLabel, OptionsSettingCard, FluentIcon
 
 from Translator import translation_source_selector
@@ -106,3 +106,6 @@ class FunConfigPageWidget(QWidget):
         if all((self.float_w.isVisible(), self.mask_w.isVisible())):
             del self.mask_w.Translator
             self.mask_w.Translator = translation_source_selector(value.value)
+
+    def update_api(self):
+        ...

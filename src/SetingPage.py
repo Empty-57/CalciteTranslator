@@ -1,11 +1,10 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
+from PySide6.QtWidgets import QWidget, QVBoxLayout
 from qfluentwidgets import (
     ComboBoxSettingCard,
     FluentIcon,
     ColorSettingCard,
-    setCustomStyleSheet,
     OptionsSettingCard,
     BodyLabel,
     setTheme,
