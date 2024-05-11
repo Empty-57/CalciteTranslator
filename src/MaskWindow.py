@@ -33,7 +33,7 @@ class MaskWindow(QWidget):
 
         self.float_w = float_w
         self.config = config
-        self.ocr_thread = OCRThread(self)
+        self.TranslatorExecute_thread = TranslatorExecuteThread(self)
         self.Translator = None
 
         # setThemeColor('#393e46')
@@ -106,8 +106,8 @@ class MaskWindow(QWidget):
 
     def __execute__(self):
         self.signer.emit(((), False))
-        if not self.ocr_thread.isRunning():
-            self.ocr_thread.start()
+        if not self.TranslatorExecute_thread.isRunning():
+            self.TranslatorExecute_thread.start()
 
     def __hide__(self):
         if self._hide.isChecked():
@@ -190,7 +190,7 @@ class MaskWindow(QWidget):
             self._endPos = None
 
 
-class OCRThread(QThread):
+class TranslatorExecuteThread(QThread):
     def __init__(self, mask_obj: MaskWindow):
         super().__init__()
         self.result = None

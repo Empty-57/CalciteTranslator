@@ -1,3 +1,5 @@
+import json
+
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLineEdit
@@ -7,12 +9,13 @@ from Translator import translation_source_selector
 
 
 class FunConfigPageWidget(QWidget):
-    def __init__(self, text: str, config, float_w, mask_w):
+    def __init__(self, text: str, config, float_w, mask_w, parent=None):
         super().__init__()
         self.text = text
         self.config = config
         self.float_w = float_w
         self.mask_w = mask_w
+        self.parent = parent
 
         self.scrollArea = SingleDirectionScrollArea(orient=Qt.Orientation.Vertical)
         # 动态调整大小
@@ -48,6 +51,9 @@ class FunConfigPageWidget(QWidget):
         self.init()
 
     def init(self):
+        self.bd_appid_edit.editingFinished.connect(lambda: self.update_api(type_='bd'))
+        self.bd_key_edit.editingFinished.connect(lambda: self.update_api(type_='bd'))
+
         self.bd_apiItem_1.setContentsMargins(0, 0, 0, 0)
         self.vBoxLayout.setContentsMargins(0, 15, 30, 15)
         self.SideLayout.setContentsMargins(30, 15, 0, 15)
@@ -107,5 +113,12 @@ class FunConfigPageWidget(QWidget):
             del self.mask_w.Translator
             self.mask_w.Translator = translation_source_selector(value.value)
 
-    def update_api(self):
-        ...
+    def update_api(self, type_):
+        path = r'config\api_config.json'
+        if type_ == 'bd':
+            with open(path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                data['Baidu_API']['APPID'] = self.bd_appid_edit.text()
+                data['Baidu_API']['KEY'] = self.bd_key_edit.text()
+            with open(path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=4, ensure_ascii=False)

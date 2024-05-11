@@ -15,6 +15,14 @@ langdetect_api = 'https://fanyi.baidu.com/langdetect'
 DEFAULT_VALUE = 'デフォルト値'
 CONTENT_TYPE = 'application/json;charset=UTF-8'
 
+api_config = None
+
+
+def update_api_config():
+    with open(r'config/api_config.json', 'r', encoding='utf-8') as f:
+        api_config_ = json.load(f)
+    return api_config_
+
 
 def make_phonetic(text: str) -> dict:
     mecab_tagger = MeCab.Tagger("-chasen")
@@ -221,12 +229,14 @@ class MiraiTranslator:
 
 
 def translation_source_selector(index):
+    global api_config
     __dict = {
         0: BDTranslator,
         1: FXTranslator,
         2: YDTranslator,
         3: MiraiTranslator,
     }
+    api_config = update_api_config()
     return __dict[index]()
 
 

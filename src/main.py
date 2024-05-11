@@ -1,17 +1,19 @@
 # -*- coding:utf-8 -*-
 import sys
+
 from PySide6 import QtCore
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from qfluentwidgets import FluentIcon as FIF, qconfig, FluentTranslator, MSFluentWindow, setTheme
 from qfluentwidgets import NavigationItemPosition
+
 from Config import MyConfig
 from FloatingWindow import FloatingWindow
+from FunConfigPage import FunConfigPageWidget
 from HomePage import HomePageWidget
 from MaskWindow import MaskWindow
 from SetingPage import SetPageWidget
-from FunConfigPage import FunConfigPageWidget
 
 
 class Window(MSFluentWindow):
@@ -45,6 +47,7 @@ class Window(MSFluentWindow):
             config=self.config,
             float_w=self.float_w,
             mask_w=self.mask_w,
+            parent=self
         )
 
         self.initNavigation()
