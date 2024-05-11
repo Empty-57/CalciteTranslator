@@ -148,10 +148,12 @@ class SetPageWidget(QWidget):
 
     def font_color_changed(self, value):
         box_color = self.config.get(self.config.box_color)
+        box_rgba = f'#{hex(box_color.rgba())[2:]:0>8}'
+        font_rgba = f'#{hex(value.rgba())[2:]:0>8}'
         text_label_qss = f"""
                         BodyLabel{{
-                        background-color: {'#' + str(hex(box_color.alpha()))[2:] + str(box_color.name())[1:]};
-                        color: {'#' + str(hex(value.alpha()))[2:] + str(value.name())[1:]};
+                        background-color: {box_rgba};
+                        color: {font_rgba};
                         border-radius:0px;  
                         }}
                         """
@@ -159,9 +161,10 @@ class SetPageWidget(QWidget):
 
     def font_color_rst(self):
         box_color = self.config.get(self.config.box_color)
+        box_rgba = f'#{hex(box_color.rgba())[2:]:0>8}'
         text_label_qss = f"""
                             BodyLabel{{
-                            background-color: {'#' + str(hex(box_color.alpha()))[2:] + str(box_color.name())[1:]};
+                            background-color: {box_rgba};
                             color: "#cc00adb5";
                             border-radius:0px;  
                             }}
@@ -171,10 +174,12 @@ class SetPageWidget(QWidget):
 
     def box_color_changed(self, value):
         font_color = self.config.get(self.config.font_color)
+        box_rgba = f'#{hex(value.rgba())[2:]:0>8}'
+        font_rgba = f'#{hex(font_color.rgba())[2:]:0>8}'
         box_qss = f"""
                     BodyLabel{{
-                    background-color: {'#' + str(hex(value.alpha()))[2:] + str(value.name())[1:]};
-                    color: {'#' + str(hex(font_color.alpha()))[2:] + str(font_color.name())[1:]};
+                    background-color: {box_rgba};
+                    color: {font_rgba};
                     border-radius:0px;  
                     }}
                     """
@@ -182,10 +187,11 @@ class SetPageWidget(QWidget):
 
     def box_color_rst(self):
         font_color = self.config.get(self.config.font_color)
+        font_rgba = f'#{hex(font_color.rgba())[2:]:0>8}'
         box_qss = f"""
                                 BodyLabel{{
                                 background-color: #cc212121;
-                                color: {'#' + str(hex(font_color.alpha()))[2:] + str(font_color.name())[1:]};
+                                color: {font_rgba};
                                 border-radius:0px;  
                                 }}
                                 """

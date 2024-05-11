@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt, QPoint, QSize
 from PySide6.QtGui import QFont, QColor
-from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
-from qfluentwidgets import BodyLabel, PlainTextEdit, setCustomStyleSheet, CommandBar, Action, FluentIcon, \
+from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy
+from qfluentwidgets import BodyLabel, setCustomStyleSheet, CommandBar, Action, FluentIcon, \
     SingleDirectionScrollArea
 
 
@@ -10,7 +10,7 @@ class FloatingWindow(QWidget):
         super().__init__(parent=parent)
         self._startPos = None
         self._endPos = None
-        self._moved = False
+        self._move = False
 
         self.config = config
         self.font_size: int = self.config.get(self.config.font_size)
@@ -63,6 +63,7 @@ class FloatingWindow(QWidget):
         self.text_label.setText("デフォルト値")
         self.text_label.setFont(QFont(self.font, self.font_size))
         self.text_label.setWordWrap(True)
+        self.text_label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         self.status_text.setFont(QFont(self.font, 12))
         self.status_text.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -72,8 +73,6 @@ class FloatingWindow(QWidget):
         self.vBoxLayout_side.setContentsMargins(0, 0, 0, 0)
         self.vBoxLayout.setContentsMargins(0, 0, 0, 0)
         self.hBoxLayout.setContentsMargins(0, 0, 0, 0)
-
-        # self.text_label.setContentsMargins(2, 1, 2, 1)
 
         self.status_bar.setLayout(self.hBoxLayout)
         self.hBoxLayout.addWidget(self.commandBar, 1)
@@ -90,8 +89,8 @@ class FloatingWindow(QWidget):
 
         text_label_qss = f"""
                 BodyLabel{{
-                background-color: {'#' + str(hex(self.box_color.alpha()))[2:] + str(self.box_color.name())[1:]};
-                color: {'#' + str(hex(self.font_color.alpha()))[2:] + str(self.font_color.name())[1:]};
+                background-color: #{hex(self.box_color.rgba())[2:]:0>8};
+                color: #{hex(self.font_color.rgba())[2:]:0>8};
                 border-radius:0px;  
                 }}
                 """
@@ -141,18 +140,19 @@ class FloatingWindow(QWidget):
         # move event
         if event.button() == Qt.MouseButton.LeftButton:
             self._startPos = QPoint(event.x(), event.y())
-            self._moved = True
+            self._move = True
 
     # 鼠标移动事件
     def mouseMoveEvent(self, event):
         # move event
-        self._endPos = event.pos() - self._startPos
-        self.move(self.pos() + self._endPos)
+        if self._move:
+            self._endPos = event.pos() - self._startPos
+            self.move(self.pos() + self._endPos)
 
     # 鼠标释放事件
     def mouseReleaseEvent(self, event):
         # flag ret
         if event.button() == Qt.MouseButton.LeftButton:
-            self._moved = False
+            self._move = False
             self._startPos = None
             self._endPos = None
