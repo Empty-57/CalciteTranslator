@@ -174,6 +174,12 @@ class TranslatorStartThread(QThread):
         try:
             translator_index = self.hp_obj.config.get(self.hp_obj.config.translator).value
             self.hp_obj.mask_w.Translator = translation_source_selector(translator_index)
-            return True
+            check = self.hp_obj.mask_w.Translator.execute()
+            status_code = check[2]
+            status_text = check[3]
+            if status_code == 200 and status_text == 'ok':
+                return True
+            else:
+                return False
         except Exception:
             return False

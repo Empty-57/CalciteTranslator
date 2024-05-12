@@ -51,6 +51,10 @@ class FunConfigPageWidget(QWidget):
         self.init()
 
     def init(self):
+        with open(r'config\api_config.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        self.bd_appid_edit.setText(data['Baidu_API']['APPID'])
+        self.bd_key_edit.setText(data['Baidu_API']['KEY'])
         self.bd_appid_edit.editingFinished.connect(lambda: self.update_api(type_='bd'))
         self.bd_key_edit.editingFinished.connect(lambda: self.update_api(type_='bd'))
 
