@@ -16,6 +16,7 @@ class TranslatorEnum(Enum):
     FX_T = 1
     YD_T = 2
     Mirai_T = 3
+    BD_API = 4
 
     @staticmethod
     def get_name(index):
@@ -24,6 +25,7 @@ class TranslatorEnum(Enum):
             TranslatorEnum.FX_T: '福昕翻译',
             TranslatorEnum.YD_T: '有道翻译',
             TranslatorEnum.Mirai_T: 'Mirai翻译',
+            TranslatorEnum.BD_API: '百度API'
         }
         return __name_dict__[index]
 

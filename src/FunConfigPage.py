@@ -77,7 +77,7 @@ class FunConfigPageWidget(QWidget):
             icon=FluentIcon.LANGUAGE,
             title="翻译源",
             content="设置翻译源",
-            texts=["百度翻译", "福昕翻译", "有道翻译", "Mirai翻译"],
+            texts=["百度翻译", "福昕翻译", "有道翻译", "Mirai翻译", "百度API"],
         )
         self.config.translator.valueChanged.connect(lambda value: self.translator_changed(value))
 

@@ -10,6 +10,7 @@ from Cryptodome.Cipher import AES
 from Cryptodome.Util.Padding import unpad, pad
 from fake_user_agent import user_agent
 from lxml import etree
+from abc import ABC, abstractmethod
 
 langdetect_api = 'https://fanyi.baidu.com/langdetect'
 DEFAULT_VALUE = 'デフォルト値'
@@ -53,14 +54,23 @@ def langdetect(ocr_text: str) -> str:
     return 'jp'
 
 
-class BDTranslator:
-    """baidu_translator"""
-    __translate_api__ = 'https://fanyi.baidu.com/ait/text/translate'
-
+class TranslatorBase(ABC):
     def __init__(self):
         print(f"<{self.__class__.__name__}>:----------start----------")
         self.__translation_results__ = None
         self.__phonetic__ = {}
+
+    @abstractmethod
+    def execute(self):
+        ...
+
+
+class BDTranslator(TranslatorBase):
+    """baidu_translator"""
+    __translate_api__ = 'https://fanyi.baidu.com/ait/text/translate'
+
+    def __init__(self):
+        super().__init__()
         self.lang_dict = {"jp": 'jp', 'zh': 'zh'}
 
     def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, int, str]:
@@ -91,14 +101,12 @@ class BDTranslator:
             return self.__translation_results__, self.__phonetic__, translate_post.status_code, 'err'
 
 
-class FXTranslator:
+class FXTranslator(TranslatorBase):
     __translate_api__ = 'https://fanyi.pdf365.cn/api/wordTranslateResult'
     __SIGN_KEY__ = 'FOXIT_YEE_TRANSLATE'
 
     def __init__(self):
-        print(f"<{self.__class__.__name__}>:----------start----------")
-        self.__translation_results__ = None
-        self.__phonetic__ = {}
+        super().__init__()
         self.lang_dict = {"jp": 'ja', 'zh': 'zh'}
 
     def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, int, str]:
@@ -128,16 +136,14 @@ class FXTranslator:
             return self.__translation_results__, self.__phonetic__, translate_post.status_code, 'err'
 
 
-class YDTranslator:
+class YDTranslator(TranslatorBase):
     __translate_api__ = 'https://dict.youdao.com/webtranslate'
     __AESIV__ = "ydsecret://query/iv/C@lZe2YzHtZ2CYgaXKSVfsb7Y4QWHjITPPZ0nQp87fBeJ!Iv6v^6fvi2WN@bYpJ4"
     __AESKEY__ = "ydsecret://query/key/B*RGygVywfNBwpmBaZg*WT7SIOUP2T0C9WHMZN39j^DAdaZhAnxvGcCY6VYFwnHl"
     __SECRETKEY__ = "fsdsogkndfokasodnaso"
 
     def __init__(self):
-        print(f"<{self.__class__.__name__}>:----------start----------")
-        self.__translation_results__ = None
-        self.__phonetic__ = {}
+        super().__init__()
         self.lang_dict = {"jp": 'ja', 'zh': 'zh-CHS'}
 
     def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, int, str]:
@@ -184,13 +190,11 @@ class YDTranslator:
             return self.__translation_results__, self.__phonetic__, translate_post.status_code, 'err'
 
 
-class MiraiTranslator:
+class MiraiTranslator(TranslatorBase):
     __translate_api__ = 'https://trial.miraitranslate.com/trial/api/translate.php'
 
     def __init__(self):
-        print(f"<{self.__class__.__name__}>:----------start----------")
-        self.__translation_results__ = None
-        self.__phonetic__ = {}
+        super().__init__()
         self.lang_dict = {"jp": 'ja', 'zh': 'zh'}
 
     def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, int, str]:
@@ -204,11 +208,11 @@ class MiraiTranslator:
 
         header['cookie'] = f"translate_session={cookie['translate_session']}"
         translate_data = {
-            "input": f"{ocr_text}",
-            "source": f"{from_lang}",
-            "target": f"{to_lang}",
+            "input": ocr_text,
+            "source": from_lang,
+            "target": to_lang,
             "filter_profile": "nmt",
-            "tran": f"{tran}",
+            "tran": tran,
             "zt": False
         }
 
@@ -228,6 +232,46 @@ class MiraiTranslator:
             return self.__translation_results__, self.__phonetic__, translate_post.status_code, 'err'
 
 
+class BDAPI(TranslatorBase):
+    __translate_api__ = 'https://fanyi-api.baidu.com/api/trans/vip/translate'
+
+    def __init__(self):
+        super().__init__()
+        self.lang_dict = {"jp": 'jp', 'zh': 'zh'}
+
+    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh'):
+        from_lang = self.lang_dict[from_lang]
+        to_lang = self.lang_dict[to_lang]
+        appid = api_config['Baidu_API']['APPID']
+        key = api_config['Baidu_API']['KEY']
+        str_ = appid + ocr_text + "CalciteTranslator" + key
+        md5 = hashlib.md5()  # 创建md5加密对象
+        md5.update(str_.encode('utf-8'))  # 指定需要加密的字符串
+        sign = md5.hexdigest()  # 加密后的字符串
+        header = {'user-agent': user_agent(), 'Content-Type': "application/x-www-form-urlencoded"}
+        translate_data = {
+            "q": ocr_text,
+            "from": from_lang,
+            "to": to_lang,
+            "appid": appid,
+            "salt": "CalciteTranslator",
+            "sign": sign
+        }
+        translate_post = requests.post(BDAPI.__translate_api__, params=translate_data, headers=header)
+        result = translate_post.json()
+        if translate_post.status_code == 200 and 'error_code' not in result:
+            self.__translation_results__ = result['trans_result'][0]['dst']
+            print(fr"<{self.__class__.__name__}>Translate_Result: {self.__translation_results__}")
+            self.__phonetic__ = make_phonetic(ocr_text) if from_lang == 'jp' or langdetect(
+                ocr_text) == 'jp' else {}
+            print(fr"<{self.__class__.__name__}>Phonetic: {self.__phonetic__}")
+            return self.__translation_results__, self.__phonetic__, translate_post.status_code, 'ok'
+        else:
+            print(fr'{self.__class__.__name__}error:status_code>{translate_post.status_code}')
+            self.__translation_results__ = f'<error>http状态码:{translate_post.status_code} (网络错误或API已失效)'
+            return self.__translation_results__, self.__phonetic__, translate_post.status_code, 'err'
+
+
 def translation_source_selector(index):
     global api_config
     __dict = {
@@ -235,6 +279,7 @@ def translation_source_selector(index):
         1: FXTranslator,
         2: YDTranslator,
         3: MiraiTranslator,
+        4: BDAPI
     }
     api_config = update_api_config()
     return __dict[index]()

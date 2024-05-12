@@ -142,6 +142,7 @@ class TranslatorCheackThread(QThread):
             1: '福昕翻译',
             2: '有道翻译',
             3: 'Mirai翻译',
+            4: '百度API'
         }
         status_code = None
         for i in [t.value for t in TranslatorEnum]:
