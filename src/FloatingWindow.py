@@ -37,7 +37,7 @@ class FloatingWindow(QWidget):
         self.text_label = QLabel(text="デフォルト値")
 
         self.status_bar = QWidget(self)
-        self.status_text = QLabel(text="waiting...")
+        self.status_text = QLabel(text="waitting...")
 
         self.init()
         self.resize(600, 100)
