@@ -72,11 +72,11 @@ class HomePageWidget(QWidget):
                 parent=self
             )
 
-    def translator_check_info(self, name, status_code, type_=1):
+    def translator_check_info(self, name, delay, type_=1):
         if type_ == 0:
             InfoBar.success(
                 title=f'{name}:正常！',
-                content="状态码：200 OK",
+                content=f"延迟：{delay}ms",
                 orient=Qt.Orientation.Horizontal,
                 isClosable=True,
                 position=InfoBarPosition.BOTTOM_RIGHT,
@@ -86,17 +86,7 @@ class HomePageWidget(QWidget):
         elif type_ == 1:
             InfoBar.error(
                 title=f'{name}:错误！',
-                content=f"状态码：{status_code} API可能已经失效",
-                orient=Qt.Orientation.Horizontal,
-                isClosable=True,
-                position=InfoBarPosition.TOP_RIGHT,
-                duration=5000,
-                parent=self
-            )
-        else:
-            InfoBar.error(
-                title=f'{name}:错误！',
-                content="InternalErrors(网络错误或API已失效)",
+                content="检查未通过，请查看日志！",
                 orient=Qt.Orientation.Horizontal,
                 isClosable=True,
                 position=InfoBarPosition.TOP_RIGHT,
@@ -144,19 +134,13 @@ class TranslatorCheackThread(QThread):
             3: 'Mirai翻译',
             4: '百度API'
         }
-        status_code = None
         for i in [t.value for t in TranslatorEnum]:
             try:
-                tra = translation_source_selector(i)
-                tra_ = tra.execute()
-                status_code = tra_[2]
-                status_text = tra_[3]
-                if status_code == 200 and status_text == 'ok':
-                    self.parent.translator_check_signer.emit(__dict[i], status_code, 0)
-                else:
-                    self.parent.translator_check_signer.emit(__dict[i], status_code, 1)
-            except Exception:
-                self.parent.translator_check_signer.emit(__dict[i], status_code, 2)
+                translation_source_selector(i).execute()
+                self.parent.translator_check_signer.emit(__dict[i], 200, 0)
+            except Exception as e:
+                print(e)
+                self.parent.translator_check_signer.emit(__dict[i], -1, 1)
 
 
 class TranslatorStartThread(QThread):
@@ -174,12 +158,8 @@ class TranslatorStartThread(QThread):
         try:
             translator_index = self.hp_obj.config.get(self.hp_obj.config.translator).value
             self.hp_obj.mask_w.Translator = translation_source_selector(translator_index)
-            check = self.hp_obj.mask_w.Translator.execute()
-            status_code = check[2]
-            status_text = check[3]
-            if status_code == 200 and status_text == 'ok':
-                return True
-            else:
-                return False
-        except Exception:
+            self.hp_obj.mask_w.Translator.execute()
+            return True
+        except Exception as e:
+            print(f'{self.__class__.__name__}:{e}')
             return False

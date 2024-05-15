@@ -214,7 +214,8 @@ class TranslatorExecuteThread(QThread):
             try:
                 trans_result = self.mask_obj.Translator.execute(ocr_text=self.result, from_lang='jp', to_lang='zh')
                 return trans_result
-            except Exception:
-                return 'InternalErrors(网络错误或API已失效)', False
+            except Exception as e:
+                print(f'{self.__class__.__name__}:{e}')
+                return '运行时出错，请查看日志！', {}
         else:
-            return 'None(ocr未识别到,请重试)', {}, 200, "err"
+            return 'None(ocr未识别到,请重试)', {}

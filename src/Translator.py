@@ -54,6 +54,15 @@ def langdetect(ocr_text: str) -> str:
     return 'jp'
 
 
+class TrslatorError(Exception):
+    def __init__(self, obj):
+        self.obj = obj
+        print(f'''
+        当前源:{self.obj.__class__.__name__}
+        Error:请检查网络环境与API配置及额度，或翻译源已经不可用
+        ''')
+
+
 class TranslatorBase(ABC):
     def __init__(self):
         print(f"<{self.__class__.__name__}>:----------start----------")
@@ -73,7 +82,7 @@ class BDTranslator(TranslatorBase):
         super().__init__()
         self.lang_dict = {"jp": 'jp', 'zh': 'zh'}
 
-    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, int, str]:
+    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict]:
         from_lang = self.lang_dict[from_lang]
         to_lang = self.lang_dict[to_lang]
         header = {'user-agent': user_agent(), 'Content-Type': CONTENT_TYPE}
@@ -94,11 +103,9 @@ class BDTranslator(TranslatorBase):
                     self.__phonetic__ = make_phonetic(ocr_text) if from_lang == 'jp' or langdetect(
                         ocr_text) == 'jp' else {}
                     print(fr"<{self.__class__.__name__}>Phonetic: {self.__phonetic__}")
-            return self.__translation_results__, self.__phonetic__, translate_post.status_code, 'ok'
+            return self.__translation_results__, self.__phonetic__
         else:
-            print(fr'{self.__class__.__name__}error:status_code>{translate_post.status_code}')
-            self.__translation_results__ = f'<error>http状态码:{translate_post.status_code}(网络错误或API已失效)'
-            return self.__translation_results__, self.__phonetic__, translate_post.status_code, 'err'
+            raise TrslatorError(obj=self)
 
 
 class FXTranslator(TranslatorBase):
@@ -109,7 +116,7 @@ class FXTranslator(TranslatorBase):
         super().__init__()
         self.lang_dict = {"jp": 'ja', 'zh': 'zh'}
 
-    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, int, str]:
+    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict]:
         from_lang = self.lang_dict[from_lang]
         to_lang = self.lang_dict[to_lang]
         t_ = int(time.time())
@@ -129,11 +136,9 @@ class FXTranslator(TranslatorBase):
             self.__phonetic__ = make_phonetic(ocr_text) if from_lang == 'jp' or langdetect(
                 ocr_text) == 'jp' else {}
             print(fr"<{self.__class__.__name__}>Phonetic: {self.__phonetic__}")
-            return self.__translation_results__, self.__phonetic__, translate_post.status_code, 'ok'
+            return self.__translation_results__, self.__phonetic__
         else:
-            print(fr'{self.__class__.__name__}error:status_code>{translate_post.status_code}')
-            self.__translation_results__ = f'<error>http状态码:{translate_post.status_code}(网络错误或API已失效)'
-            return self.__translation_results__, self.__phonetic__, translate_post.status_code, 'err'
+            raise TrslatorError(obj=self)
 
 
 class YDTranslator(TranslatorBase):
@@ -146,7 +151,7 @@ class YDTranslator(TranslatorBase):
         super().__init__()
         self.lang_dict = {"jp": 'ja', 'zh': 'zh-CHS'}
 
-    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, int, str]:
+    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict]:
         from_lang = self.lang_dict[from_lang]
         to_lang = self.lang_dict[to_lang]
         t_ = int(time.time() * 1000)
@@ -183,11 +188,9 @@ class YDTranslator(TranslatorBase):
             self.__phonetic__ = make_phonetic(ocr_text) if from_lang == 'jp' or langdetect(
                 ocr_text) == 'jp' else {}
             print(fr"<{self.__class__.__name__}>Phonetic: {self.__phonetic__}")
-            return self.__translation_results__, self.__phonetic__, translate_post.status_code, 'ok'
+            return self.__translation_results__, self.__phonetic__
         else:
-            print(fr'{self.__class__.__name__}error:status_code>{translate_post.status_code}')
-            self.__translation_results__ = f'<error>http状态码:{translate_post.status_code}(网络错误或API已失效)'
-            return self.__translation_results__, self.__phonetic__, translate_post.status_code, 'err'
+            raise TrslatorError(obj=self)
 
 
 class MiraiTranslator(TranslatorBase):
@@ -197,7 +200,7 @@ class MiraiTranslator(TranslatorBase):
         super().__init__()
         self.lang_dict = {"jp": 'ja', 'zh': 'zh'}
 
-    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, int, str]:
+    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict]:
         from_lang = self.lang_dict[from_lang]
         to_lang = self.lang_dict[to_lang]
         header = {'user-agent': user_agent(), 'Content-Type': CONTENT_TYPE}
@@ -225,11 +228,9 @@ class MiraiTranslator(TranslatorBase):
             self.__phonetic__ = make_phonetic(ocr_text) if from_lang == 'jp' or langdetect(
                 ocr_text) == 'jp' else {}
             print(fr"<{self.__class__.__name__}>Phonetic: {self.__phonetic__}")
-            return self.__translation_results__, self.__phonetic__, translate_post.status_code, 'ok'
+            return self.__translation_results__, self.__phonetic__
         else:
-            print(fr'{self.__class__.__name__}error:status_code>{translate_post.status_code}')
-            self.__translation_results__ = f'<error>http状态码:{translate_post.status_code} (网络错误或API已失效)'
-            return self.__translation_results__, self.__phonetic__, translate_post.status_code, 'err'
+            raise TrslatorError(obj=self)
 
 
 class BDAPI(TranslatorBase):
@@ -239,7 +240,7 @@ class BDAPI(TranslatorBase):
         super().__init__()
         self.lang_dict = {"jp": 'jp', 'zh': 'zh'}
 
-    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh'):
+    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh')-> tuple[str, dict]:
         from_lang = self.lang_dict[from_lang]
         to_lang = self.lang_dict[to_lang]
         appid = api_config['Baidu_API']['APPID']
@@ -265,11 +266,9 @@ class BDAPI(TranslatorBase):
             self.__phonetic__ = make_phonetic(ocr_text) if from_lang == 'jp' or langdetect(
                 ocr_text) == 'jp' else {}
             print(fr"<{self.__class__.__name__}>Phonetic: {self.__phonetic__}")
-            return self.__translation_results__, self.__phonetic__, translate_post.status_code, 'ok'
+            return self.__translation_results__, self.__phonetic__
         else:
-            print(fr'{self.__class__.__name__}error:status_code>{translate_post.status_code}')
-            self.__translation_results__ = f'<error>http状态码:{translate_post.status_code} (网络错误或API已失效)'
-            return self.__translation_results__, self.__phonetic__, translate_post.status_code, 'err'
+            raise TrslatorError(obj=self)
 
 
 def translation_source_selector(index):
