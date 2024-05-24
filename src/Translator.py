@@ -240,7 +240,7 @@ class BDAPI(TranslatorBase):
         super().__init__()
         self.lang_dict = {"jp": 'jp', 'zh': 'zh'}
 
-    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh')-> tuple[str, dict]:
+    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict]:
         from_lang = self.lang_dict[from_lang]
         to_lang = self.lang_dict[to_lang]
         appid = api_config['Baidu_API']['APPID']
