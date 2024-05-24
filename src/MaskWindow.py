@@ -1,7 +1,7 @@
 import time
 
 import pyautogui
-from PySide6.QtCore import QSize, Qt, QPoint, QThread, Signal
+from PySide6.QtCore import QSize, Qt, QPoint, QThread, Signal, QRect
 from PySide6.QtWidgets import QWidget, QGridLayout, QHBoxLayout
 from qfluentwidgets import CommandBar, Action, FluentIcon, TransparentToolButton
 
@@ -25,11 +25,6 @@ class MaskWindow(QWidget):
 
     def __init__(self, float_w, config, parent=None):
         super().__init__(parent)
-        self._startPos = None
-        self._endPos = None
-        self._changed = False
-        self._auto = False
-        self._move = False
 
         self.float_w = float_w
         self.config = config
@@ -78,7 +73,7 @@ class MaskWindow(QWidget):
         self._mask1.setLayout(self.hQHBoxLayout)
         self._mask1.setMaximumHeight(35)
         self.hQHBoxLayout.addWidget(self.commandBar, 2)
-        self.hQHBoxLayout.addWidget(self._resize, 1, Qt.AlignmentFlag.AlignRight)
+        # self.hQHBoxLayout.addWidget(self._resize, 1, Qt.AlignmentFlag.AlignRight)
 
         self.hQGridLayout.setSpacing(2)
         self.hQGridLayout.setContentsMargins(0, 0, 0, 0)
@@ -165,29 +160,15 @@ class MaskWindow(QWidget):
     # 单击鼠标触发事件
     def mousePressEvent(self, event):
         # move event
-        if event.button() == Qt.MouseButton.LeftButton:
-            self._startPos = QPoint(event.x(), event.y())
-            self._move = True
+        self.windowHandle().startSystemMove()
 
     # 鼠标移动事件
     def mouseMoveEvent(self, event):
-        # move event
-        if self._move:
-            self._endPos = event.pos() - self._startPos
-            self.move(self.pos() + self._endPos)
-            self._changed = True
+        ...
 
     # 鼠标释放事件
     def mouseReleaseEvent(self, event):
-        if self._changed and self._auto:
-            self.__execute__()
-
-        # flag ret
-        if event.button() == Qt.MouseButton.LeftButton:
-            self._changed = False
-            self._move = False
-            self._startPos = None
-            self._endPos = None
+        ...
 
 
 class TranslatorExecuteThread(QThread):

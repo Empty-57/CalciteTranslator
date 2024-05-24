@@ -7,9 +7,6 @@ from qfluentwidgets import CommandBar, Action, FluentIcon, SingleDirectionScroll
 class FloatingWindow(QWidget):
     def __init__(self, config, parent=None):
         super().__init__(parent=parent)
-        self._startPos = None
-        self._endPos = None
-        self._move = False
 
         self.config = config
         self.font_size: int = self.config.get(self.config.font_size)
@@ -133,21 +130,12 @@ class FloatingWindow(QWidget):
     # 单击鼠标触发事件
     def mousePressEvent(self, event):
         # move event
-        if event.button() == Qt.MouseButton.LeftButton:
-            self._startPos = QPoint(event.x(), event.y())
-            self._move = True
+        self.windowHandle().startSystemMove()
 
     # 鼠标移动事件
     def mouseMoveEvent(self, event):
-        # move event
-        if self._move:
-            self._endPos = event.pos() - self._startPos
-            self.move(self.pos() + self._endPos)
+        ...
 
     # 鼠标释放事件
     def mouseReleaseEvent(self, event):
-        # flag ret
-        if event.button() == Qt.MouseButton.LeftButton:
-            self._move = False
-            self._startPos = None
-            self._endPos = None
+        ...
