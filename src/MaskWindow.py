@@ -2,7 +2,7 @@ import time
 
 import pyautogui
 from PySide6.QtCore import QSize, Qt, QPoint, QThread, Signal, QRect
-from PySide6.QtWidgets import QWidget, QGridLayout, QHBoxLayout
+from PySide6.QtWidgets import QWidget, QGridLayout, QHBoxLayout, QVBoxLayout
 from qfluentwidgets import CommandBar, Action, FluentIcon, TransparentToolButton
 
 from TextRecognition import OCR
@@ -32,7 +32,6 @@ class MaskWindow(QWidget):
         self.Translator = None
 
         # setThemeColor('#393e46')
-
         self.commandBar = CommandBar()
         self.commandBar.setIconSize(QSize(12, 12))
 
@@ -45,7 +44,7 @@ class MaskWindow(QWidget):
         self._mask = QWidget()
         self._mask1 = QWidget()
 
-        self.hQGridLayout = QGridLayout(self)
+        self.hQVBoxLayout = QVBoxLayout(self)
         self.hQHBoxLayout = QHBoxLayout()
 
         self.resize(400, 100)
@@ -67,16 +66,17 @@ class MaskWindow(QWidget):
             self._closed
         ])
 
-        self.hQGridLayout.addWidget(self._mask, 0, 0)
-        self.hQGridLayout.addWidget(self._mask1, 1, 0)
+        self.hQVBoxLayout.addWidget(self._mask)
+        self.hQVBoxLayout.addWidget(self._mask1)
 
         self._mask1.setLayout(self.hQHBoxLayout)
         self._mask1.setMaximumHeight(35)
         self.hQHBoxLayout.addWidget(self.commandBar, 2)
-        # self.hQHBoxLayout.addWidget(self._resize, 1, Qt.AlignmentFlag.AlignRight)
+        self.hQHBoxLayout.addWidget(self._resize, 1, Qt.AlignmentFlag.AlignRight)
 
-        self.hQGridLayout.setSpacing(2)
-        self.hQGridLayout.setContentsMargins(0, 0, 0, 0)
+        self.hQVBoxLayout.setSpacing(2)
+        self.hQHBoxLayout.setSpacing(0)
+        self.hQVBoxLayout.setContentsMargins(0, 0, 0, 0)
         self.hQHBoxLayout.setContentsMargins(0, 0, 0, 0)
 
         self.setWindowTitle("MaskWindow")
