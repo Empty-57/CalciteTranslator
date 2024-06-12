@@ -8,17 +8,6 @@ from qfluentwidgets import CommandBar, Action, FluentIcon, TransparentToolButton
 from TextRecognition import OCR
 
 
-def time_keeper(func):
-    def _(*args, **kwargs):
-        time_ = time.time()
-        func_ = func(*args, **kwargs)
-        print(f"Time taken is: < {time.time() - time_:.4f}s >", )
-        time_ = f"{time.time() - time_:.2f}"
-        return func_, time_
-
-    return _
-
-
 class MaskWindow(QWidget):
     signer = Signal(tuple)
     ocr = OCR()
@@ -100,7 +89,7 @@ class MaskWindow(QWidget):
         )
 
     def __execute__(self):
-        self.signer.emit(((), False))
+        self.signer.emit(("", False))
         if not self.TranslatorExecute_thread.isRunning():
             self.TranslatorExecute_thread.start()
 
@@ -180,7 +169,6 @@ class TranslatorExecuteThread(QThread):
     def run(self):
         self.mask_obj.signer.emit(self.__execute__())
 
-    @time_keeper
     def __execute__(self):
         _window = pyautogui.getWindowsWithTitle("MaskWindow")[0]
         left, top, width, height = _window.left, _window.top, _window.width, _window.height

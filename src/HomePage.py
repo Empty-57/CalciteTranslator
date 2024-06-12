@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt, QThread, Signal
 from PySide6.QtWidgets import QWidget, QHBoxLayout
 from qfluentwidgets import PushButton, InfoBar, InfoBarPosition
-
+import time
 from Config import TranslatorEnum
 from Translator import translation_source_selector
 
@@ -136,10 +136,10 @@ class TranslatorCheackThread(QThread):
         }
         for i in [t.value for t in TranslatorEnum]:
             try:
-                translation_source_selector(i).execute()
-                self.parent.translator_check_signer.emit(__dict[i], 200, 0)
+                time_cnt = translation_source_selector(i).execute()[-1]
+                self.parent.translator_check_signer.emit(__dict[i], time_cnt * 1000, 0)
             except Exception as e:
-                print(e)
+                print(f'{self.__class__.__name__}:{e}')
                 self.parent.translator_check_signer.emit(__dict[i], -1, 1)
 
 

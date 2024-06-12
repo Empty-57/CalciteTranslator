@@ -82,7 +82,7 @@ class BDTranslator(TranslatorBase):
         super().__init__()
         self.lang_dict = {"jp": 'jp', 'zh': 'zh'}
 
-    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict]:
+    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, float]:
         from_lang = self.lang_dict[from_lang]
         to_lang = self.lang_dict[to_lang]
         header = {'user-agent': user_agent(), 'Content-Type': CONTENT_TYPE}
@@ -103,7 +103,8 @@ class BDTranslator(TranslatorBase):
                     self.__phonetic__ = make_phonetic(ocr_text) if from_lang == 'jp' or langdetect(
                         ocr_text) == 'jp' else {}
                     print(fr"<{self.__class__.__name__}>Phonetic: {self.__phonetic__}")
-            return self.__translation_results__, self.__phonetic__
+            requests_time = translate_post.elapsed.total_seconds()
+            return self.__translation_results__, self.__phonetic__, requests_time
         else:
             raise TrslatorError(obj=self)
 
@@ -116,7 +117,7 @@ class FXTranslator(TranslatorBase):
         super().__init__()
         self.lang_dict = {"jp": 'ja', 'zh': 'zh'}
 
-    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict]:
+    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, float]:
         from_lang = self.lang_dict[from_lang]
         to_lang = self.lang_dict[to_lang]
         t_ = int(time.time())
@@ -136,7 +137,8 @@ class FXTranslator(TranslatorBase):
             self.__phonetic__ = make_phonetic(ocr_text) if from_lang == 'jp' or langdetect(
                 ocr_text) == 'jp' else {}
             print(fr"<{self.__class__.__name__}>Phonetic: {self.__phonetic__}")
-            return self.__translation_results__, self.__phonetic__
+            requests_time = translate_post.elapsed.total_seconds()
+            return self.__translation_results__, self.__phonetic__, requests_time
         else:
             raise TrslatorError(obj=self)
 
@@ -151,7 +153,7 @@ class YDTranslator(TranslatorBase):
         super().__init__()
         self.lang_dict = {"jp": 'ja', 'zh': 'zh-CHS'}
 
-    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict]:
+    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, float]:
         from_lang = self.lang_dict[from_lang]
         to_lang = self.lang_dict[to_lang]
         t_ = int(time.time() * 1000)
@@ -188,7 +190,8 @@ class YDTranslator(TranslatorBase):
             self.__phonetic__ = make_phonetic(ocr_text) if from_lang == 'jp' or langdetect(
                 ocr_text) == 'jp' else {}
             print(fr"<{self.__class__.__name__}>Phonetic: {self.__phonetic__}")
-            return self.__translation_results__, self.__phonetic__
+            requests_time = translate_post.elapsed.total_seconds()
+            return self.__translation_results__, self.__phonetic__, requests_time
         else:
             raise TrslatorError(obj=self)
 
@@ -200,7 +203,7 @@ class MiraiTranslator(TranslatorBase):
         super().__init__()
         self.lang_dict = {"jp": 'ja', 'zh': 'zh'}
 
-    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict]:
+    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, float]:
         from_lang = self.lang_dict[from_lang]
         to_lang = self.lang_dict[to_lang]
         header = {'user-agent': user_agent(), 'Content-Type': CONTENT_TYPE}
@@ -228,7 +231,8 @@ class MiraiTranslator(TranslatorBase):
             self.__phonetic__ = make_phonetic(ocr_text) if from_lang == 'jp' or langdetect(
                 ocr_text) == 'jp' else {}
             print(fr"<{self.__class__.__name__}>Phonetic: {self.__phonetic__}")
-            return self.__translation_results__, self.__phonetic__
+            requests_time = translate_post.elapsed.total_seconds()
+            return self.__translation_results__, self.__phonetic__, requests_time
         else:
             raise TrslatorError(obj=self)
 
@@ -240,7 +244,7 @@ class BDAPI(TranslatorBase):
         super().__init__()
         self.lang_dict = {"jp": 'jp', 'zh': 'zh'}
 
-    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict]:
+    def execute(self, ocr_text=DEFAULT_VALUE, from_lang='jp', to_lang='zh') -> tuple[str, dict, float]:
         from_lang = self.lang_dict[from_lang]
         to_lang = self.lang_dict[to_lang]
         appid = api_config['Baidu_API']['APPID']
@@ -266,7 +270,8 @@ class BDAPI(TranslatorBase):
             self.__phonetic__ = make_phonetic(ocr_text) if from_lang == 'jp' or langdetect(
                 ocr_text) == 'jp' else {}
             print(fr"<{self.__class__.__name__}>Phonetic: {self.__phonetic__}")
-            return self.__translation_results__, self.__phonetic__
+            requests_time = translate_post.elapsed.total_seconds()
+            return self.__translation_results__, self.__phonetic__, requests_time
         else:
             raise TrslatorError(obj=self)
 

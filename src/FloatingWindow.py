@@ -104,11 +104,11 @@ class FloatingWindow(QWidget):
 
     def set_text(self, text):
         if text[0]:
-            self.text_label.setText(text[0][0])
+            self.text_label.setText(text[0])
         if not text[1]:
             self.status_text.setText("翻译中……")
         else:
-            self.status_text.setText(f"翻译用时:{text[1]}s 翻译源:{self.config.get(self.config.translator).value}")
+            self.status_text.setText(f"翻译用时:{text[-1]:.2f}s")
 
     def __fontsize_inc__(self):
         if self.font_size < 20:
