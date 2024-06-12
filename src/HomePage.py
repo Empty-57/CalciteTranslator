@@ -61,16 +61,8 @@ class HomePageWidget(QWidget):
     def __translator_check__(self):
         if not self.translator_check_thread.isRunning():
             self.translator_check_thread.start()
-        else:
-            InfoBar.warning(
-                title='测试正在进行中！',
-                content="",
-                orient=Qt.Orientation.Horizontal,
-                isClosable=True,
-                position=InfoBarPosition.TOP_RIGHT,
-                duration=3000,
-                parent=self
-            )
+            self.translator_check_btn.setText("执行中……")
+            self.translator_check_btn.setEnabled(False)
 
     def translator_check_info(self, name, delay, type_=1):
         if type_ == 0:
@@ -134,6 +126,8 @@ class TranslatorCheackThread(QThread):
             except Exception as e:
                 print(f'{self.__class__.__name__}:{e}')
                 self.parent.translator_check_signer.emit(TranslatorEnum.get_name(i), -1, 1)
+        self.parent.translator_check_btn.setText("翻译源测试")
+        self.parent.translator_check_btn.setEnabled(True)
 
 
 class TranslatorStartThread(QThread):

@@ -18,7 +18,6 @@ class MaskWindow(QWidget):
         self.TranslatorExecute_thread = TranslatorExecuteThread(self)
         self.Translator = None
 
-        # setThemeColor('#393e46')
         self.commandBar = CommandBar()
         self.commandBar.setIconSize(QSize(12, 12))
 

@@ -34,7 +34,7 @@ class FunConfigPageWidget(QWidget):
 
         self.title = BodyLabel(text="功能配置")
         self.title_1 = BodyLabel(text="翻译源选择")
-        self.title_1_1 = BodyLabel(text="各翻译源效果不尽相同，按需选择")
+        self.title_1_1 = BodyLabel(text="各翻译源效果不尽相同，自行选择")
         self.title_2 = BodyLabel(text="API配置")
         self.title_2_1 = BodyLabel(text="百度API")
 

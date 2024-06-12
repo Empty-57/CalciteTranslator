@@ -5,7 +5,7 @@ from PySide6 import QtCore
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
-from qfluentwidgets import FluentIcon as FIF, qconfig, FluentTranslator, MSFluentWindow, setTheme
+from qfluentwidgets import FluentIcon as FIF, qconfig, FluentTranslator, MSFluentWindow, setTheme, setThemeColor
 from qfluentwidgets import NavigationItemPosition
 
 from Config import MyConfig
@@ -54,6 +54,7 @@ class Window(MSFluentWindow):
 
     def initWindow(self):
         setTheme(qconfig.get(qconfig.themeMode))
+        setThemeColor('#393e46')
         self.setMicaEffectEnabled(self.config.get(self.config.mica_effect_enable))
 
         self.setWindowOpacity(0.9)
