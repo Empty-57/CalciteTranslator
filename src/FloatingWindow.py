@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt, QPoint, QSize
+from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QFont, QColor
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy, QLabel
 from qfluentwidgets import CommandBar, Action, FluentIcon, SingleDirectionScrollArea

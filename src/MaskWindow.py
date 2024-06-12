@@ -1,8 +1,6 @@
-import time
-
 import pyautogui
-from PySide6.QtCore import QSize, Qt, QPoint, QThread, Signal, QRect
-from PySide6.QtWidgets import QWidget, QGridLayout, QHBoxLayout, QVBoxLayout
+from PySide6.QtCore import QSize, Qt, QThread, Signal
+from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
 from qfluentwidgets import CommandBar, Action, FluentIcon, TransparentToolButton
 
 from TextRecognition import OCR
