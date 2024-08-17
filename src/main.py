@@ -23,7 +23,7 @@ class Window(MSFluentWindow):
         super().__init__()
         self.config = MyConfig()
         qconfig.load(r'config/config.json', self.config)
-        self.initWindow()
+        self.init_window()
         self.float_w = FloatingWindow(config=self.config)
         self.mask_w = MaskWindow(float_w=self.float_w, config=self.config)
         self.mask_w.signer.connect(self.float_w.set_text)
@@ -50,9 +50,9 @@ class Window(MSFluentWindow):
             parent=self
         )
 
-        self.initNavigation()
+        self.init_navigation()
 
-    def initWindow(self):
+    def init_window(self):
         setTheme(qconfig.get(qconfig.themeMode))
         setThemeColor('#393e46')
         self.setMicaEffectEnabled(self.config.get(self.config.mica_effect_enable))
@@ -65,7 +65,7 @@ class Window(MSFluentWindow):
         self.resize(800, 600)
         self.setMinimumSize(600, 400)
 
-    def initNavigation(self):
+    def init_navigation(self):
         self.addSubInterface(self.homeInterface, FIF.HOME, '主页', FIF.HOME)
         self.addSubInterface(self.funInterface, FIF.DEVELOPER_TOOLS, '配置', FIF.DEVELOPER_TOOLS)
 
