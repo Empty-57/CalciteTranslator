@@ -16,13 +16,14 @@ langdetect_api = 'https://fanyi.baidu.com/langdetect'
 DEFAULT_VALUE = 'デフォルト値'
 CONTENT_TYPE = 'application/json;charset=UTF-8'
 
-api_config = None
 
-
-def update_api_config():
+def update_api_config() -> dict:
     with open(r'config/api_config.json', 'r', encoding='utf-8') as f:
         api_config_ = json.load(f)
     return api_config_
+
+
+api_config = update_api_config()
 
 
 def make_phonetic(text: str) -> dict:
@@ -54,7 +55,7 @@ def langdetect(ocr_text: str) -> str:
     return 'jp'
 
 
-class TrslatorError(Exception):
+class TranslatorError(Exception):
     def __init__(self, obj):
         self.obj = obj
         print(f'''
@@ -106,7 +107,7 @@ class BDTranslator(TranslatorBase):
             requests_time = translate_post.elapsed.total_seconds()
             return self.__translation_results__, self.__phonetic__, requests_time
         else:
-            raise TrslatorError(obj=self)
+            raise TranslatorError(obj=self)
 
 
 class FXTranslator(TranslatorBase):
@@ -140,7 +141,7 @@ class FXTranslator(TranslatorBase):
             requests_time = translate_post.elapsed.total_seconds()
             return self.__translation_results__, self.__phonetic__, requests_time
         else:
-            raise TrslatorError(obj=self)
+            raise TranslatorError(obj=self)
 
 
 class YDTranslator(TranslatorBase):
@@ -193,7 +194,7 @@ class YDTranslator(TranslatorBase):
             requests_time = translate_post.elapsed.total_seconds()
             return self.__translation_results__, self.__phonetic__, requests_time
         else:
-            raise TrslatorError(obj=self)
+            raise TranslatorError(obj=self)
 
 
 class MiraiTranslator(TranslatorBase):
@@ -234,7 +235,7 @@ class MiraiTranslator(TranslatorBase):
             requests_time = translate_post.elapsed.total_seconds()
             return self.__translation_results__, self.__phonetic__, requests_time
         else:
-            raise TrslatorError(obj=self)
+            raise TranslatorError(obj=self)
 
 
 class BDAPI(TranslatorBase):
@@ -273,7 +274,7 @@ class BDAPI(TranslatorBase):
             requests_time = translate_post.elapsed.total_seconds()
             return self.__translation_results__, self.__phonetic__, requests_time
         else:
-            raise TrslatorError(obj=self)
+            raise TranslatorError(obj=self)
 
 
 def translation_source_selector(index):
