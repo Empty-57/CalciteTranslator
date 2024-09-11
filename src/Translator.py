@@ -2,6 +2,7 @@ import base64
 import hashlib
 import json
 import time
+from abc import ABC, abstractmethod
 
 import MeCab
 import jaconv
@@ -10,7 +11,6 @@ from Cryptodome.Cipher import AES
 from Cryptodome.Util.Padding import unpad, pad
 from fake_user_agent import user_agent
 from lxml import etree
-from abc import ABC, abstractmethod
 
 langdetect_api = 'https://fanyi.baidu.com/langdetect'
 DEFAULT_VALUE = 'デフォルト値'

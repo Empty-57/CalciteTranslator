@@ -1,4 +1,5 @@
 from typing import Dict, Union
+
 import mss
 import numpy
 from paddleocr import PaddleOCR
