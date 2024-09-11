@@ -1,16 +1,16 @@
 {
-  "FloatingWindow": {
-	"BoxColor": "#cc212121",
-	"Font": "Arial",
-	"FontColor": "#cc00adb5",
-	"FontSize": 16
-  },
-  "Main": {
-	"EnableMicaEffect": false,
-	"Translator": 4
-  },
-  "QFluentWidgets": {
-	"ThemeColor": "#ff393e46",
-	"ThemeMode": "Dark"
-  }
+    "FloatingWindow": {
+        "BoxColor": "#cc212121",
+        "Font": "Arial",
+        "FontColor": "#cc00adb5",
+        "FontSize": 16
+    },
+    "Main": {
+        "EnableMicaEffect": false,
+        "Translator": 4
+    },
+    "QFluentWidgets": {
+        "ThemeColor": "#ff393e46",
+        "ThemeMode": "Dark"
+    }
 }
